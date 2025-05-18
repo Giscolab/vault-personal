@@ -1,0 +1,77 @@
+Structure du dossier
+Le numéro de série du volume est BAAA-2F5F
+C:.
+¦   arborescence.txt
+¦   arborescence_vault.md
+¦   CHANGELOG.md
+¦   CONTRIBUTING.md
+¦   index.html
+¦   LICENSE
+¦   start_vault_local.bat
+¦   
++---docs
+¦       .htaccess
+¦       
++---public
+¦   ¦   style.css
+¦   ¦   
+¦   +---icons
+¦           android-chrome-192x192.png
+¦           android-chrome-512x512.png
+¦           apple-touch-icon.png
+¦           favicon-16x16.png
+¦           favicon-32x32.png
+¦           favicon.ico
+¦           site.webmanifest
+¦           
++---scripts
+¦   ¦   app.js
+¦   ¦   crypto.js
+¦   ¦   security.js
+¦   ¦   storage.js
+¦   ¦   
+¦   +---core
+¦   ¦   +---crypto
+¦   ¦   ¦   ¦   aes-gcm.js
+¦   ¦   ¦   ¦   pbkdf2.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---workers
+¦   ¦   ¦           aes-gcm.worker.js
+¦   ¦   ¦           pbkdf2.worker.js
+¦   ¦   ¦           
+¦   ¦   +---storage
+¦   ¦   ¦       backup.js
+¦   ¦   ¦       indexeddb.js
+¦   ¦   ¦       manager.js
+¦   ¦   ¦       schema.js
+¦   ¦   ¦       
+¦   ¦   +---vault
+¦   ¦           manager.js
+¦   ¦           vault.js
+¦   ¦           
+¦   +---security
+¦   ¦       audit.js
+¦   ¦       autolock.js
+¦   ¦       csp.js
+¦   ¦       memory.js
+¦   ¦       
+¦   +---ui
+¦   ¦   +---auth-screen
+¦   ¦   ¦       auth-screen.js
+¦   ¦   ¦       
+¦   ¦   +---password-meter
+¦   ¦   ¦       password-meter.js
+¦   ¦   ¦       
+¦   ¦   +---vault-list
+¦   ¦           vault-list.js
+¦   ¦           
+¦   +---utils
+¦           idb-helper.js
+¦           logger.js
+¦           password-generator.js
+¦           toast.js
+¦           
++---tests
+        crypto.spec.js
+        vault.spec.js
+        
