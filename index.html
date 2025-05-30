@@ -2,71 +2,87 @@
 <html lang="fr">
 
 <head>
-	<meta charset="UTF-8" />
-	<title>Vault Personal</title>
-	<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';">
-	<link rel="stylesheet" href="public/style.css">
-	<!-- Favicon classique -->
-	<link rel="icon" href="public/icons/favicon.ico" type="image/x-icon">
-	<!-- Favicon pour navigateurs modernes -->
-	<link rel="icon" type="image/png" sizes="32x32" href="public/icons/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="public/icons/favicon-16x16.png">
-	<!-- iOS -->
-	<link rel="apple-touch-icon" href="public/icons/apple-touch-icon.png">
-	<!-- Android / Progressive Web App -->
-	<link rel="manifest" href="public/icons/site.webmanifest">
+  <meta charset="UTF-8" />
+  <title>Vault Personal</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- 🛡️ CSP renforcée -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none';">
+
+  <!-- 🎨 Styles -->
+  <link rel="stylesheet" href="public/main.css" integrity="sha384-..." crossorigin="anonymous" />
+  
+  <!-- 🔖 Favicons -->
+  <link rel="icon" href="public/icons/favicon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="public/icons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="public/icons/favicon-16x16.png">
+  <link rel="apple-touch-icon" href="public/icons/apple-touch-icon.png">
+  <link rel="manifest" href="public/icons/site.webmanifest">
 </head>
 
 <body>
-	<main id="app">
-		<!-- Écran d’authentification -->
-		<section id="auth-screen">
-			<h1>Déverrouiller le coffre</h1>
-			<form id="auth-form">
-				<input type="text" name="username" autocomplete="username" hidden>
-				<input type="password" id="master-password" autocomplete="new-password" required>
-				<label for="toggle-password-visibility">
-					<input type="checkbox" id="toggle-password-visibility"> Afficher le mot de passe </label>
-				<button type="submit" id="unlock-vault">Déverrouiller</button>
-			</form>
-		</section>
-		<!-- Interface principale -->
-		<section id="vault-ui" hidden>
-			<!-- Statistiques -->
-			<div id="stats-section"></div>
-			<!-- Formulaire d’ajout -->
-			<section id="add-entry-form">
-				<h2>Nouvelle entrée</h2>
-				<form id="entry-form">
-					<input type="text" id="entry-title" placeholder="Nom du site ou service" required />
-					<input type="text" id="entry-username" placeholder="Nom d’utilisateur" required autocomplete="username" />
-					<input type="password" id="entry-password" placeholder="Mot de passe" required autocomplete="new-password" />
-					<div style="margin-top: 10px;">
-						<button type="button" id="generate-password">Générer</button>
-						<button type="submit" id="save-entry">Sauvegarder</button>
-					</div>
-				</form>
-			</section>
-			<!-- Section EXPORT -->
-			<section id="export-section">
-				<button id="btn-export">Exporter le coffre (.vault)</button>
-				<input type="file" id="file-import" accept=".vault" style="display:none;">
-				<button id="btn-import">Importer un coffre (.vault)</button>
-			</section>
-			<!-- Liste des entrées -->
-			<section id="vault-list">
-				<h2>Mes mots de passe</h2>
-				<div id="entries"></div> <!-- ✅ Élément requis pour .innerHTML -->
-			</section>
-		</section>
-	</main>
-	<!-- Inclusion des scripts -->
-	<script type="module" src="scripts/app.js"></script>
-	<script type="module" src="tests/crypto.spec.js"></script>
-	<script type="module" src="tests/vault.spec.js"></script>
-	<div id="autolock-timer"></div>
-	<div id="log-console"></div>
-	<div id="toast" class="toast" hidden></div>
+  <noscript><p>JavaScript requis pour utiliser l'application.</p></noscript>
+
+  <main id="app">
+    <!-- 🔐 Écran d’authentification -->
+    <section id="auth-screen">
+      <h1>Déverrouiller le coffre</h1>
+      <form id="auth-form" class="auth-form" autocomplete="off">
+        <input type="text" name="username" hidden autocomplete="username">
+        <input type="password" id="master-password" class="auth-form__input" autocomplete="off" required>
+        <div class="password-toggle">
+          <input type="checkbox" id="toggle-password-visibility" class="password-toggle__input">
+          <label for="toggle-password-visibility" class="password-toggle__label">Afficher le mot de passe</label>
+        </div>
+        <button type="submit" id="unlock-vault" class="btn btn--primary">Déverrouiller</button>
+      </form>
+    </section>
+
+    <!-- 🧩 Interface principale -->
+    <section id="vault-ui" hidden>
+      
+      <!-- 📊 Statistiques -->
+      <div id="stats-section"></div>
+
+      <!-- ➕ Formulaire d’ajout -->
+      <section id="add-entry-form" class="section">
+        <h2 class="section__title">Nouvelle entrée</h2>
+        <form id="entry-form" autocomplete="off">
+          <input type="text" id="entry-title" placeholder="Nom du site ou service" required>
+          <input type="text" id="entry-username" placeholder="Nom d’utilisateur" autocomplete="off" required>
+          <input type="password" id="entry-password" placeholder="Mot de passe" autocomplete="off" required>
+          <div class="form-actions">
+            <button type="button" id="generate-password" class="btn btn--primary">Générer</button>
+            <button type="submit" id="save-entry" class="btn btn--primary">Sauvegarder</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- 📤📥 Export / Import -->
+      <section id="export-section" class="section section--transparent">
+        <button id="btn-export" class="btn btn--outline">Exporter le coffre (.vault)</button>
+        <input type="file" id="file-import" accept=".vault" hidden>
+        <button id="btn-import" class="btn btn--outline">Importer un coffre (.vault)</button>
+        <input type="file" id="csv-import" accept=".csv" hidden>
+        <button id="btn-csv-import" class="btn btn--outline">Importer depuis un CSV Edge</button>
+      </section>
+
+      <!-- 🔐 Liste des entrées -->
+      <section id="vault-list" class="section vault-list--grid">
+        <h2 class="section__title section__title--secondary">Mes mots de passe</h2>
+        <div class="vault-list__scroll" id="entries"></div>
+      </section>
+    </section>
+  </main>
+
+  <!-- ⚙️ Scripts -->
+  <script type="module" src="scripts/app.js" integrity="sha384-..." crossorigin="anonymous"></script>
+
+
+  <!-- 📺 UI auxiliaire -->
+  <div id="autolock-timer"></div>
+  <div id="log-console"></div>
 </body>
 
 </html>

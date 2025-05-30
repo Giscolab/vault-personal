@@ -1,0 +1,29 @@
+@layer components.export {
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+    margin-block-start: var(--spacing-lg);
+    justify-content: flex-end;
+  }
+
+  .toolbar + .toolbar {
+    border-top: 1px dashed var(--color-border);
+    padding-block-start: var(--spacing-sm);
+  }
+
+  @media (max-width: 600px) {
+    .toolbar {
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    .toolbar > * {
+      width: 100%;
+    }
+  }
+}
+.toolbar {
+  max-width: 900px;
+  margin-inline: auto;
+}

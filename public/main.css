@@ -1,0 +1,43 @@
+/* ======== BASE ======== */
+@import 'base/reset.css';
+@import 'base/tokens.css';
+@import 'base/global.css';
+
+/* ======== LAYOUT ======== */
+@import 'layout/app.css';
+@import 'layout/auth.css';
+@import 'layout/sections.css';
+@import 'layout/responsive.css';
+
+/* ======== COMPONENTS ======== */
+@import 'components/button.css';
+@import 'components/forms.css';
+@import 'components/toast.css';
+@import 'components/vault.css';
+@import 'components/stats.css';
+@import 'components/timer.css';
+@import 'components/console.css';
+@import 'components/export-import.css';
+
+/* ======== UTILITIES ======== */
+@import 'utilities/accessibility.css';
+
+/* ======== COUCHE GLOBALE ======== */
+@layer base {
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    padding: var(--spacing-lg);
+	min-height: 100vh;
+  }
+}
+
+/* ======== OVERRIDES ======== */
+@layer utilities.overrides {
+  #app {
+    max-width: 100%;
+    width: min(100% - 2rem, 1200px);
+    margin-inline: auto;
+  }
+}

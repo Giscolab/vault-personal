@@ -1,8 +1,19 @@
+const DEBUG = false;
+
+function debugLog(...args) {
+  if (DEBUG) console.log('[LOG]', ...args);
+}
+
 /**
- * Applique dynamiquement une Content-Security-Policy si elle est absente.
- * Ne fonctionne que côté client (local). Ne remplace pas une vraie en-tête HTTP.
+ * Injecte dynamiquement une CSP stricte côté client uniquement en dev.
+ * Permet le test de violations sans modifier le backend.
  */
 export function enforceCSP() {
+  const isDev = typeof process !== 'undefined' && process.env.NODE_ENV === 'development';
+  const hasDOM = typeof document !== 'undefined' && document.head;
+
+  if (!isDev || !hasDOM) return;
+
   const existingMeta = document.querySelector('meta[http-equiv="Content-Security-Policy"]');
 
   if (!existingMeta) {
@@ -11,16 +22,29 @@ export function enforceCSP() {
     meta.content = [
       "default-src 'self'",
       "script-src 'self'",
-      "style-src 'self' 'unsafe-inline'",
+      "style-src 'self'", // Retrait de 'unsafe-inline'
       "img-src 'self' data:",
       "object-src 'none'",
-      "base-uri 'none'"
+      "base-uri 'none'",
+      "form-action 'none'",
+      "frame-ancestors 'none'",
+      "report-uri /csp-violation-report-endpoint"
     ].join('; ');
 
     document.head.appendChild(meta);
+    debugLog('CSP injectée dynamiquement en dev.');
 
-    console.log('[CSP] Politique de sécurité injectée localement.');
+    // Hook de monitoring
+    window.addEventListener('securitypolicyviolation', (e) => {
+      console.warn('[CSP Violation]', {
+        directive: e.violatedDirective,
+        uri: e.blockedURI,
+        line: e.lineNumber,
+        source: e.sourceFile,
+        disposition: e.disposition
+      });
+    });
   } else {
-    console.log('[CSP] Politique de sécurité déjà présente.');
+    debugLog('CSP déjà présente, injection évitée.');
   }
 }

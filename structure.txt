@@ -1,0 +1,103 @@
+Structure du dossier
+C:.
+¦   arborescence_vault.md
+¦   CHANGELOG.md
+¦   CONTRIBUTING.md
+¦   index.html
+¦   LICENSE
+¦   README.md
+¦   start_vault_local.bat
+¦   structure.txt
+¦   
++---docs
+¦       .htaccess
+¦       README.md
+¦       
++---public
+¦   ¦   main.css
+¦   ¦   
+¦   +---base
+¦   ¦       global.css
+¦   ¦       reset.css
+¦   ¦       tokens.css
+¦   ¦       
+¦   +---components
+¦   ¦       button.css
+¦   ¦       console.css
+¦   ¦       export-import.css
+¦   ¦       forms.css
+¦   ¦       stats.css
+¦   ¦       timer.css
+¦   ¦       toast.css
+¦   ¦       vault.css
+¦   ¦       
+¦   +---icons
+¦   ¦       android-chrome-192x192.png
+¦   ¦       android-chrome-512x512.png
+¦   ¦       apple-touch-icon.png
+¦   ¦       favicon-16x16.png
+¦   ¦       favicon-32x32.png
+¦   ¦       favicon.ico
+¦   ¦       site.webmanifest
+¦   ¦       
+¦   +---layout
+¦   ¦       app.css
+¦   ¦       auth.css
+¦   ¦       responsive.css
+¦   ¦       sections.css
+¦   ¦       
+¦   +---utilities
+¦           accessibility.css
+¦           
++---scripts
+¦   ¦   app.js
+¦   ¦   crypto.js
+¦   ¦   security.js
+¦   ¦   storage.js
+¦   ¦   
+¦   +---core
+¦   ¦   +---crypto
+¦   ¦   ¦   ¦   aes-gcm.js
+¦   ¦   ¦   ¦   pbkdf2.js
+¦   ¦   ¦   ¦   
+¦   ¦   ¦   +---workers
+¦   ¦   ¦           aes-gcm.worker.js
+¦   ¦   ¦           pbkdf2.worker.js
+¦   ¦   ¦           
+¦   ¦   +---storage
+¦   ¦   ¦       backup.js
+¦   ¦   ¦       indexeddb.js
+¦   ¦   ¦       manager.js
+¦   ¦   ¦       schema.js
+¦   ¦   ¦       
+¦   ¦   +---vault
+¦   ¦           manager.js
+¦   ¦           vault.js
+¦   ¦           
+¦   +---security
+¦   ¦       audit.js
+¦   ¦       autolock.js
+¦   ¦       csp.js
+¦   ¦       memory.js
+¦   ¦       
+¦   +---ui
+¦   ¦   +---auth-screen
+¦   ¦   ¦       auth-screen.js
+¦   ¦   ¦       
+¦   ¦   +---password-meter
+¦   ¦   ¦       password-meter.js
+¦   ¦   ¦       
+¦   ¦   +---vault-list
+¦   ¦           vault-list.js
+¦   ¦           
+¦   +---utils
+¦           idb-helper.js
+¦           import-csv.js
+¦           logger.js
+¦           password-generator.js
+¦           toast.js
+¦           
++---tests
+        crypto.spec.js
+        vault.spec.js
+        

@@ -1,5 +1,12 @@
 import { setupUILogger } from './utils/logger.js';
 setupUILogger();
+import './utils/import-csv.js';
+
+// === Logger de debug conditionnel
+const DEBUG = false;
+function debugLog(...args) {
+  if (DEBUG) console.log('[LOG]', ...args);
+}
 
 // === Cryptographie
 import { encryptData, decryptData, encryptDataWithWorker, decryptDataWithWorker } from './core/crypto/aes-gcm.js';
@@ -59,9 +66,9 @@ vaultManager.storage.initializeDB().then(async () => {
   if (!existingVault) {
     const restored = await vaultManager.storage.restoreFromLocalBackup();
     if (restored) {
-      console.log('[INIT] Vault restauré depuis backup localStorage.');
+      debugLog('[INIT] Vault restauré depuis backup localStorage.');
     } else {
-      console.log('[INIT] Aucun vault détecté — création du mot de passe maître requise.');
+      debugLog('[INIT] Aucun vault détecté — création du mot de passe maître requise.');
       const titleElement = document.getElementById('auth-title');
       const btnElement = document.getElementById('unlock-vault');
       if (titleElement) titleElement.textContent = 'Créer un mot de passe maître';
@@ -69,7 +76,7 @@ vaultManager.storage.initializeDB().then(async () => {
       vaultManager.isFirstTime = true;
     }
   } else {
-    console.log('[INIT] Vault détecté — déverrouillage nécessaire.');
+    debugLog('[INIT] Vault détecté — déverrouillage nécessaire.');
   }
 }).catch((err) => {
   console.error('[ERREUR] Impossible d’ouvrir la base IndexedDB :', err);
@@ -109,7 +116,6 @@ document.getElementById('auth-form').addEventListener('submit', async (e) => {
   const vault = await vaultManager.storage.loadVault();
 
   if (!vault) {
-    // 🆕 Initialisation
     const salt = crypto.getRandomValues(new Uint8Array(16));
     const key = await deriveMasterKey(password, salt);
     vaultManager.masterKey = key;
@@ -129,26 +135,23 @@ document.getElementById('auth-form').addEventListener('submit', async (e) => {
     showToast("Vault initialisé avec succès.", "success");
 
   } else {
-    // 🔐 Authentification
     try {
       const salt = Uint8Array.from(atob(vault.meta.salt), c => c.charCodeAt(0));
       const key = await deriveMasterKey(password, salt);
       vaultManager.masterKey = key;
 
-    // === LOGS DE DÉBOGAGE CRYPTO ===
-    console.log("Salt utilisé:", vault.meta.salt);
-    if (vault.meta.validation) {
-      console.log("IV utilisé:", vault.meta.validation.iv);
-      console.log("Ciphertext:", vault.meta.validation.ciphertext);
-    }
+      if (DEBUG) {
+        debugLog("Salt utilisé:", vault.meta.salt);
+        if (vault.meta.validation) {
+          debugLog("IV utilisé:", vault.meta.validation.iv);
+          debugLog("Ciphertext:", vault.meta.validation.ciphertext);
+        }
+      }
 
-
-      // ✅ Test de validation
       const validation = vault.meta.validation;
       const test = await decryptData(validation, key);
       if (!test || test.check !== 'ok') throw new Error('Validation échouée');
 
-      // ✅ Clé correcte, on peut déchiffrer les entrées
       await vaultManager.decryptAllEntries();
 
     } catch (err) {
@@ -157,7 +160,6 @@ document.getElementById('auth-form').addEventListener('submit', async (e) => {
       return;
     }
   }
-
 
   hideAuthScreen();
 
@@ -168,7 +170,6 @@ document.getElementById('auth-form').addEventListener('submit', async (e) => {
   const entries = await vaultManager.decryptAllEntries();
   renderVaultEntries(entries);
 });
-
 
 // === EXPORT DU COFFRE (.vault)
 document.getElementById('btn-export').addEventListener('click', async () => {
@@ -209,13 +210,11 @@ document.getElementById('file-import').addEventListener('change', async (e) => {
   try {
     const data = await importVault(file);
 
-    // ✅ Validation minimale des champs
     if (!data.meta || !data.meta.salt || !data.meta.validation) {
       showToast("Fichier .vault invalide ou incomplet.", "error");
       return;
     }
 
-    // ✅ Force le champ 'id' requis par IndexedDB
     const vaultToImport = {
       id: 'current',
       entries: Array.isArray(data.entries) ? data.entries : [],
@@ -229,7 +228,6 @@ document.getElementById('file-import').addEventListener('change', async (e) => {
     showToast('Erreur à l’importation : vault invalide.', 'error');
   }
 });
-
 
 // Formulaire d'ajout d'entrée
 document.getElementById('entry-form').addEventListener('submit', async (e) => {
@@ -259,7 +257,4 @@ document.getElementById('entry-form').addEventListener('submit', async (e) => {
     console.error("Erreur lors de l'enregistrement :", err);
     showToast("Échec lors de l'enregistrement.", "error");
   }
-  
-  
 });
-

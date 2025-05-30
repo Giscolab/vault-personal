@@ -1,0 +1,27 @@
+@layer components.timer {
+  .autolock-timer {
+    text-align: end;
+    font-size: var(--fs-300);
+    color: var(--color-muted);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    transition: all var(--transition-base);
+  }
+
+  .autolock-timer--warning {
+    color: var(--color-danger);
+    font-weight: 700;
+    animation: pulse 1s infinite alternate;
+  }
+.autolock-timer--safe {
+  color: var(--color-success);
+}
+.autolock-timer--warning::before {
+  content: "⚠️ ";
+  margin-inline-end: var(--spacing-xs);
+}
+
+  @keyframes pulse {
+    from { opacity: 0.8; }
+    to { opacity: 1; }
+  }
+}
