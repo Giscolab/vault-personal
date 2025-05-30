@@ -63,4 +63,7 @@ Support WebAuthn (clé physique)
 Audit automatisé selon les recommandations OWASP
 
 👤 Auteur
+
 Projet développé par Franck pour une gestion locale, privée et souveraine des identifiants.
+
+
