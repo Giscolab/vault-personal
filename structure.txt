@@ -1,4 +1,5 @@
-¦   arborescence.txt
+Structure du dossier
+C:.
 ¦   arborescence_vault.md
 ¦   CHANGELOG.md
 ¦   CONTRIBUTING.md
@@ -99,3 +100,4 @@
 +---tests
         crypto.spec.js
         vault.spec.js
+        
