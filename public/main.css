@@ -1,23 +1,37 @@
 /* ======== BASE ======== */
+@import 'base/global.css';
 @import 'base/reset.css';
 @import 'base/tokens.css';
-@import 'base/global.css';
+
+/* ======== COMPONENTS ======== */
+@import 'components/button.css';
+@import 'components/console.css';
+@import 'components/export-import.css';
+@import 'components/forms.css';
+@import 'components/header.css';
+@import 'components/metrics.css';
+@import 'components/modal.css';
+@import 'components/password-strength.css';
+@import 'components/password-tools.css';
+@import 'components/recommendations.css';
+@import 'components/score-box.css';
+@import 'components/security-chart.css';
+@import 'components/security-score.css';
+@import 'components/sidebar.css';
+@import 'components/stats.css';
+@import 'components/timer.css';
+@import 'components/toast.css';
+@import 'components/toggle-switch.css';
+@import 'components/vault.css';
+@import 'components/vulnerabilities.css';
 
 /* ======== LAYOUT ======== */
 @import 'layout/app.css';
 @import 'layout/auth.css';
-@import 'layout/sections.css';
 @import 'layout/responsive.css';
-
-/* ======== COMPONENTS ======== */
-@import 'components/button.css';
-@import 'components/forms.css';
-@import 'components/toast.css';
-@import 'components/vault.css';
-@import 'components/stats.css';
-@import 'components/timer.css';
-@import 'components/console.css';
-@import 'components/export-import.css';
+@import 'layout/sections.css';
+@import 'layout/settings.css';
+@import 'layout/wrapper.css';
 
 /* ======== UTILITIES ======== */
 @import 'utilities/accessibility.css';
@@ -28,8 +42,9 @@
     font-family: 'Segoe UI', system-ui, sans-serif;
     background-color: var(--color-bg);
     color: var(--color-text);
-    padding: var(--spacing-lg);
-	min-height: 100vh;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
   }
 }
 
@@ -37,7 +52,8 @@
 @layer utilities.overrides {
   #app {
     max-width: 100%;
-    width: min(100% - 2rem, 1200px);
-    margin-inline: auto;
+    width: 100%;
+    margin: 0;
+    padding: 0;
   }
 }

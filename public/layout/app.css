@@ -9,6 +9,7 @@
     padding-inline: var(--spacing-md);
     padding-block: var(--spacing-lg);
     overflow-x: hidden;
+	min-height: 100vh;
   }
 
   @media (min-width: 1280px) {

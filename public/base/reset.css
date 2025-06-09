@@ -1,7 +1,5 @@
 @layer base.reset {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -29,6 +27,10 @@
     color: inherit;
     background: none;
     border: none;
-    /* suppression de outline: none; */
+    /* outline: none;  PAS besoin, focus visible reste géré ailleurs ! */
+  }
+
+  :where(ul, ol) {
+    list-style: none;
   }
 }

@@ -7,17 +7,19 @@
     margin-block-end: var(--spacing-lg);
   }
 
-  .section__title {
-    margin-block-end: var(--spacing-md);
-    color: var(--color-accent);
-    font-size: var(--fs-500);
-    line-height: var(--lh-tight);
-  }
+.section__title {
+  margin-block-end: var(--spacing-md);
+  color: var(--color-accent);
+  font-size: var(--fs-500);
+  line-height: var(--lh-tight);
+  font-weight: 600;
+}
+.section__title--secondary {
+  font-size: var(--fs-400);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 
-  .section__title--secondary {
-    font-size: var(--fs-400);
-    text-decoration: underline;
-  }
   .section__title--center {
   text-align: center;
 }

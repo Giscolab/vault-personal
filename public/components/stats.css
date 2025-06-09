@@ -25,22 +25,21 @@
   }
 
   .stats-label {
-    color: var(--color-muted);
+    color: var(--color-text-muted);
     font-size: var(--fs-200);
   }
   .stats-value--warning {
-  color: var(--color-warning);
-}
-.stats-value--error {
-  color: var(--color-danger);
-}
-.stats-value.animated {
-  transition: all var(--transition-base);
-}
-.stats-item--horizontal {
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: baseline;
-}
-
+    color: var(--color-warning);
+  }
+  .stats-value--error {
+    color: var(--color-danger);
+  }
+  .stats-value.animated {
+    transition: all var(--transition-base);
+  }
+  .stats-item--horizontal {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+  }
 }

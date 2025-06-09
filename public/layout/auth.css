@@ -9,7 +9,7 @@
     align-items: center;
     gap: var(--spacing-xs);
     font-size: var(--fs-300);
-    color: var(--color-muted);
+    color: var(--color-text-muted);
     margin-block-start: var(--spacing-xs);
   }
 .auth-form__field {

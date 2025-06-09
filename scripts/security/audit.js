@@ -33,5 +33,17 @@ export function auditVault(entries) {
     }
   }
 
-  return stats;
+let score = 0;
+  if (stats.total > 0) {
+    score = Math.round(
+      100 * (stats.total - stats.weak - stats.reused) / stats.total
+    );
+    if (score < 0) score = 0;
+  }
+  let level = "Low Security";
+  if (score >= 80) level = "High Security";
+  else if (score >= 50) level = "Moderate Security";
+
+  return { ...stats, score, level };
+  // ------------------------------
 }

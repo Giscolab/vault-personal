@@ -32,6 +32,9 @@ import { auditVault } from './security/audit.js';
 import { showAuthScreen, hideAuthScreen } from './ui/auth-screen/auth-screen.js';
 import { evaluatePasswordStrength, renderStrengthMeter } from './ui/password-meter/password-meter.js';
 import { renderVaultEntries } from './ui/vault-list/vault-list.js';
+import { renderSecurityReport } from './ui/security-report.js';
+import { renderSecurityChart } from './ui/security-chart.js';
+import './ui/sidebar.js';
 
 // === Utilitaires
 import { PasswordGenerator } from './utils/password-generator.js';
@@ -41,19 +44,58 @@ import { showToast } from './utils/toast.js';
 // === Sécurité CSP
 enforceCSP();
 
-// === Initialisation du gestionnaire principal
+// === INITIALISATION PRINCIPALE ===
 const vaultManager = new VaultManager();
 vaultManager.storage = new StorageManager();
 vaultManager.isFirstTime = false;
 window.vaultManager = vaultManager;
 
-// Affichage/Masquage du mot de passe maître
+// === NAVIGATION PRINCIPALE (template tabs/views) ===
+const navDashboard = document.getElementById('nav-dashboard');
+const navPasswords = document.getElementById('nav-passwords');
+const navSecurity = document.getElementById('nav-security');
+const navSettings = document.getElementById('nav-settings');
+
+// Helper pour afficher une seule vue principale à la fois
+function showView(viewId) {
+  document.querySelectorAll('section.view').forEach(section => section.hidden = true);
+  const view = document.getElementById(viewId);
+  if (view) view.hidden = false;
+}
+
+// Dashboard
+if (navDashboard) {
+  navDashboard.addEventListener('click', () => showView('dashboard-view'));
+}
+// Passwords
+if (navPasswords) {
+  navPasswords.addEventListener('click', () => {
+    showView('passwords-view');
+    // <-- Ajout MAJEUR pour afficher la vraie liste
+    const entries = vaultManager.getEntries();
+    renderVaultEntries(entries);
+  });
+}
+
+// Rapport de sécurité
+if (navSecurity) {
+  navSecurity.addEventListener('click', () => {
+    showView('security-report-view');
+    renderSecurityReport(); // met à jour dynamiquement à chaque affichage
+  });
+}
+// Paramètres
+if (navSettings) {
+  navSettings.addEventListener('click', () => showView('settings-view'));
+}
+
+// === UI : Affichage/Masquage du mot de passe maître ===
 document.getElementById('toggle-password-visibility').addEventListener('change', (e) => {
   const input = document.getElementById('master-password');
   input.type = e.target.checked ? 'text' : 'password';
 });
 
-// Vérifie support IndexedDB
+// === Vérifie support IndexedDB ===
 if (!window.indexedDB) {
   showToast("IndexedDB n’est pas supporté par ce navigateur ou ce mode.");
   throw new Error("IndexedDB not supported.");
@@ -88,17 +130,25 @@ vaultManager.storage.initializeDB().then(async () => {
 const locker = new AutoLock(() => {
   vaultManager.masterKey = null;
   showAuthScreen();
+  // SÉCURITÉ : on vide le champ mot de passe maître !
+  const pwInput = document.getElementById('master-password');
+  if (pwInput) pwInput.value = '';
   showToast('Session verrouillée automatiquement.', 'error');
 }, 300000);
 
-// Générateur de mot de passe
-document.getElementById('generate-password').addEventListener('click', () => {
-  const password = PasswordGenerator.generate();
-  document.getElementById('entry-password').value = password;
-});
+
+const generateBtn = document.getElementById('generate-password');
+const passwordInput = document.getElementById('password');
+
+if (generateBtn && passwordInput && typeof PasswordGenerator !== "undefined") {
+  generateBtn.addEventListener('click', () => {
+    const password = PasswordGenerator.generate();
+    passwordInput.value = password;
+  });
+}
 
 // Force du mot de passe en live
-document.getElementById('entry-password').addEventListener('input', (e) => {
+document.getElementById('password').addEventListener('input', (e) => {
   const strength = evaluatePasswordStrength(e.target.value);
   renderStrengthMeter(strength);
 });
@@ -161,14 +211,51 @@ document.getElementById('auth-form').addEventListener('submit', async (e) => {
     }
   }
 
-  hideAuthScreen();
+hideAuthScreen();
 
-  const stats = await vaultManager.getPasswordStats();
-  document.getElementById('stats-section').innerText =
-    `Total: ${stats.total} | Réutilisés: ${stats.reused} | Faibles: ${stats.weak}`;
+const stats = await vaultManager.getPasswordStats();
 
-  const entries = await vaultManager.decryptAllEntries();
-  renderVaultEntries(entries);
+// === MAJ DU SCORE DE SÉCURITÉ PRINCIPAL (block de la page d'accueil) ===
+if (document.getElementById('stats-score')) {
+  document.getElementById('stats-score').innerText = stats.score + "%";
+}
+if (document.getElementById('stats-score-ring')) {
+  document.getElementById('stats-score-ring').innerText = stats.score + "%";
+}
+
+// Niveau de sécurité (niveau dashboard)
+if (document.getElementById('stats-level')) {
+  let level = "Sécurité faible";
+  if (stats.score >= 80) level = "Sécurité forte";
+  else if (stats.score >= 60) level = "Sécurité modérée";
+  document.getElementById('stats-level').innerText = level;
+}
+
+// Message info sous le score
+if (document.getElementById('stats-info')) {
+  document.getElementById('stats-info').innerHTML =
+    `Améliorez votre score de sécurité en mettant à jour les mots de passe faibles et réutilisés. 
+    Nous avons trouvé <span id="stats-weak-in-info">${stats.weak}</span> mots de passe qui nécessitent une attention particulière.`;
+}
+
+// Nombres de métriques diverses
+if (document.getElementById('stats-total')) {
+  document.getElementById('stats-total').innerText = stats.total;
+}
+if (document.getElementById('stats-weak')) {
+  document.getElementById('stats-weak').innerText = stats.weak;
+}
+if (document.getElementById('stats-reused')) {
+  document.getElementById('stats-reused').innerText = stats.reused;
+}
+if (document.getElementById('stats-old')) {
+  document.getElementById('stats-old').innerText = stats.old;
+}
+
+// Mets à jour aussi dans la phrase info si besoin (évite les doublons si déjà fait au-dessus)
+const infoWeak = document.getElementById('stats-weak-in-info');
+if (infoWeak) infoWeak.innerText = stats.weak;
+
 });
 
 // === EXPORT DU COFFRE (.vault)
@@ -230,31 +317,34 @@ document.getElementById('file-import').addEventListener('change', async (e) => {
 });
 
 // Formulaire d'ajout d'entrée
-document.getElementById('entry-form').addEventListener('submit', async (e) => {
-  e.preventDefault();
+const entryForm = document.getElementById('entry-form');
+if (entryForm) {
+  entryForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-  const title = document.getElementById('entry-title').value.trim();
-  const username = document.getElementById('entry-username').value.trim();
-  const password = document.getElementById('entry-password').value;
+    const title = document.getElementById('entry-title').value.trim();
+    const username = document.getElementById('entry-username').value.trim();
+    const password = document.getElementById('password').value;
 
-  if (!title || !username || !password) {
-    showToast("Tous les champs sont requis.", "error");
-    return;
-  }
+    if (!title || !username || !password) {
+      showToast("Tous les champs sont requis.", "error");
+      return;
+    }
 
-  try {
-    await vaultManager.addEntry({ title, username, password });
-    document.getElementById('entry-title').value = '';
-    document.getElementById('entry-username').value = '';
-    document.getElementById('entry-password').value = '';
+    try {
+      await vaultManager.addEntry({ title, username, password });
+      document.getElementById('entry-title').value = '';
+      document.getElementById('entry-username').value = '';
+      document.getElementById('password').value = '';
 
-    const stats = await vaultManager.getPasswordStats();
-    document.getElementById('stats-section').innerText =
-      `Total: ${stats.total} | Réutilisés: ${stats.reused} | Faibles: ${stats.weak}`;
+      const stats = await vaultManager.getPasswordStats();
+      document.getElementById('stats-section').innerText =
+        `Total: ${stats.total} | Réutilisés: ${stats.reused} | Faibles: ${stats.weak}`;
 
-    showToast("Entrée enregistrée avec succès.", "success");
-  } catch (err) {
-    console.error("Erreur lors de l'enregistrement :", err);
-    showToast("Échec lors de l'enregistrement.", "error");
-  }
-});
+      showToast("Entrée enregistrée avec succès.", "success");
+    } catch (err) {
+      console.error("Erreur lors de l'enregistrement :", err);
+      showToast("Échec lors de l'enregistrement.", "error");
+    }
+  });
+}

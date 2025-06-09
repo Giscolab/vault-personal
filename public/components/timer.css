@@ -2,7 +2,7 @@
   .autolock-timer {
     text-align: end;
     font-size: var(--fs-300);
-    color: var(--color-muted);
+    color: var(--color-text-muted);
     padding: var(--spacing-xs) var(--spacing-sm);
     transition: all var(--transition-base);
   }

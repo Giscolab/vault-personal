@@ -68,22 +68,38 @@ export class VaultManager {
     return decrypted;
   }
 
-  async getPasswordStats() {
-    const entries = this.vault.getAllEntries();
-    const stats = { total: entries.length, reused: 0, weak: 0 };
-    const seen = new Set();
+async getPasswordStats() {
+  const entries = this.vault.getAllEntries();
+  const stats = { total: entries.length, reused: 0, weak: 0 };
 
-    for (const e of entries) {
-      if (seen.has(e.password)) stats.reused++;
-      else seen.add(e.password);
+  const seen = new Set();
 
-      if (e.password.length < 10 || !/[A-Z]/.test(e.password) || !/[0-9]/.test(e.password)) {
-        stats.weak++;
-      }
+  for (const e of entries) {
+    if (seen.has(e.password)) stats.reused++;
+    else seen.add(e.password);
+
+    if (e.password.length < 10 || !/[A-Z]/.test(e.password) || !/[0-9]/.test(e.password)) {
+      stats.weak++;
     }
-
-    return stats;
   }
+
+  // === AJOUT CALCUL SCORE ===
+  let score = 0;
+  if (stats.total > 0) {
+    score = Math.round(100 * (stats.total - stats.weak - stats.reused) / stats.total);
+    if (score < 0) score = 0;
+  }
+
+  // Tu peux aussi ajouter old si tu veux
+  // let old = ... (par exemple, à calculer selon la date de modif ou autre)
+
+  return {
+    ...stats,
+    score,        // <--- AJOUT OBLIGATOIRE !
+    old: 0        // <--- Si tu n’as pas encore old, mets 0 temporairement
+  };
+}
+
 
   getEntries() {
     return this.vault.getAllEntries();

@@ -1,91 +1,120 @@
+// scripts/ui/vault-list/vault-list.js
+
 import { showToast } from '../../utils/toast.js';
+import modalManager from '../modal.js';
 
 export function renderVaultEntries(entries) {
   const container = document.getElementById('entries');
   container.innerHTML = '';
+  // MAJ dynamique du compteur :
+  const countElem = document.getElementById('vault-count');
+  if (countElem) countElem.textContent = entries.length;
 
   if (!entries.length) {
     container.innerHTML = '<p>Aucune entrée enregistrée.</p>';
     return;
   }
 
+  // DÉTECTION DU TYPE DE COMPTE POUR L'ICÔNE ET LA COULEUR
+  function getIconClass(title) {
+    const t = title.toLowerCase();
+    if (t.includes('bank')) return { icon: 'fa-university', cls: 'bank-icon' };
+    if (t.includes('email')) return { icon: 'fa-envelope', cls: 'email-icon' };
+    if (t.includes('cloud')) return { icon: 'fa-cloud', cls: 'cloud-icon' };
+    if (t.includes('social')) return { icon: 'fa-share-alt', cls: 'social-icon' };
+    if (t.includes('shop')) return { icon: 'fa-shopping-cart', cls: 'shopping-icon' };
+    if (t.includes('film') || t.includes('stream')) return { icon: 'fa-film', cls: 'entertainment-icon' };
+    return { icon: 'fa-key', cls: '' };
+  }
+
+  // CALCUL RAPIDE DE LA SOLIDITÉ
+  function getStrength(password) {
+    let score = 0;
+    if (password.length >= 10) score++;
+    if (/[A-Z]/.test(password)) score++;
+    if (/[a-z]/.test(password)) score++;
+    if (/[0-9]/.test(password)) score++;
+    if (/[^A-Za-z0-9]/.test(password)) score++;
+    return score;
+  }
+
   for (const entry of entries) {
+    const { icon, cls } = getIconClass(entry.title || '');
+
+    // Barre de solidité
+    const strength = getStrength(entry.password);
+    const dotClasses = [
+      strength === 0 ? 'danger' : (strength < 3 ? 'warning' : 'active'),
+      strength > 1 ? (strength < 3 ? 'warning' : 'active') : '',
+      strength > 2 ? 'active' : '',
+      strength > 3 ? 'active' : '',
+      strength > 4 ? 'active' : ''
+    ];
+
     const wrapper = document.createElement('div');
-    wrapper.className = 'vault-list__item';
+    wrapper.className = 'vault-item';
     wrapper.dataset.id = entry.id;
 
     wrapper.innerHTML = `
-      <div class="vault-list__content">
-        <div class="vault-item__field">
-          <span class="vault-item__label">Site</span>
-          <span class="vault-list__title">
-            ${entry.title.includes('.') ? `<a href="https://${entry.title}" target="_blank">${entry.title}</a>` : entry.title}
-          </span>
+      <div class="account-info">
+        <div class="account-icon ${cls}">
+          <i class="fas ${icon}"></i>
         </div>
-
-<div class="vault-item__field">
-  <span class="vault-item__label">Utilisateur</span>
-  <span class="vault-list__username masked" data-value="${entry.username}">••••••••••••••••</span>
-  <div class="vault-list__actions">
-    <button type="button" class="btn btn--outline btn-toggle" data-target="username" data-value="${entry.username}">👁️</button>
-    <button type="button" class="btn btn--outline btn-copy" data-copy="${entry.username}">COPY</button>
-    <button type="button" class="btn btn--outline btn-edit" data-field="username">EDIT</button>
-  </div>
-</div>
-
-<div class="vault-item__field">
-  <span class="vault-item__label">Mot de passe</span>
-  <span class="vault-list__password masked" data-value="${entry.password}">••••••••••••••••</span>
-  <div class="vault-list__actions">
-    <button type="button" class="btn btn--outline btn-toggle" data-target="password" data-value="${entry.password}">👁️</button>
-    <button type="button" class="btn btn--outline btn-copy" data-copy="${entry.password}">COPY</button>
-    <button type="button" class="btn btn--outline btn-edit" data-field="password">EDIT</button>
-  </div>
-</div>
-
-<div class="vault-list__actions">
-  <button type="button" class="btn btn--outline btn-delete" data-id="${entry.id}">DELETE</button>
-</div>
-
+        <div class="account-details">
+          <strong>${entry.title || ''}</strong>
+          <span>${entry.username || ''}</span>
+          <div class="password-field">
+            <input type="password" value="${entry.password}" class="password-input" readonly>
+            <button class="toggle-password" title="Afficher/masquer"><i class="fas fa-eye"></i></button>
+          </div>
+          <div class="strength-indicator">
+            <span>Solidité :</span>
+            <div class="strength-dot ${dotClasses[0]}"></div>
+            <div class="strength-dot ${dotClasses[1]}"></div>
+            <div class="strength-dot ${dotClasses[2]}"></div>
+            <div class="strength-dot ${dotClasses[3]}"></div>
+            <div class="strength-dot ${dotClasses[4]}"></div>
+          </div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="action-btn copy" title="Copier le mot de passe"><i class="fas fa-copy"></i></button>
+        <button class="action-btn edit" title="Modifier"><i class="fas fa-edit"></i></button>
+        <button class="action-btn delete" title="Supprimer"><i class="fas fa-trash"></i></button>
+      </div>
     `;
 
     container.appendChild(wrapper);
   }
 
-// COPY
-container.querySelectorAll('.btn-copy').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const value = btn.dataset.copy;
-    if (!value) return;
-    navigator.clipboard.writeText(value).then(() => {
-      btn.textContent = '✅';
-      setTimeout(() => (btn.textContent = 'COPY'), 1500);
+  // ACTION : COPIER
+  container.querySelectorAll('.action-btn.copy').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = btn.closest('.vault-item').querySelector('.password-input');
+      if (!input) return;
+      navigator.clipboard.writeText(input.value).then(() => {
+        btn.innerHTML = '<i class="fas fa-check"></i>';
+        setTimeout(() => (btn.innerHTML = '<i class="fas fa-copy"></i>'), 1500);
+        showToast('Mot de passe copié dans le presse-papiers !', 'success');
+      });
     });
   });
-});
 
-// TOGGLE visibility
-container.querySelectorAll('.btn-toggle').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.dataset.target;
-    const parent = btn.closest('.vault-item__field');
-    const span = parent.querySelector(`.vault-list__${target}`);
-    const value = span.dataset.value;
-
-    const isMasked = span.classList.contains('masked');
-    span.textContent = isMasked ? value : '••••••••••••••••';
-    span.classList.toggle('masked');
+  // ACTION : AFFICHER/MASQUER MOT DE PASSE
+  container.querySelectorAll('.toggle-password').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = btn.closest('.password-field').querySelector('.password-input');
+      input.type = input.type === 'password' ? 'text' : 'password';
+      btn.querySelector('i').classList.toggle('fa-eye');
+      btn.querySelector('i').classList.toggle('fa-eye-slash');
+    });
   });
-});
 
-
-
-  // DELETE
-  container.querySelectorAll('.btn-delete').forEach(btn => {
+  // ACTION : SUPPRIMER
+  container.querySelectorAll('.action-btn.delete').forEach(btn => {
     btn.addEventListener('click', async () => {
-      const id = btn.closest('.vault-list__item').dataset.id;
+      const id = btn.closest('.vault-item').dataset.id;
       if (!confirm('Supprimer cette entrée ?')) return;
-
       try {
         const vault = await window.vaultManager.storage.loadVault();
         const updated = vault.entries.filter(e => e.id !== id);
@@ -94,9 +123,7 @@ container.querySelectorAll('.btn-toggle').forEach(btn => {
         renderVaultEntries(decrypted);
 
         const stats = await window.vaultManager.getPasswordStats();
-        document.getElementById('stats-section').innerText =
-          `Total: ${stats.total} | Réutilisés: ${stats.reused} | Faibles: ${stats.weak}`;
-
+        // Optionnel : maj d'une section stats ailleurs
         showToast('Entrée supprimée.', 'success');
       } catch (err) {
         console.error(err);
@@ -105,65 +132,49 @@ container.querySelectorAll('.btn-toggle').forEach(btn => {
     });
   });
 
-  // EDIT
-  container.querySelectorAll('.btn-edit').forEach(btn => {
+  // ACTION : MODIFIER
+  container.querySelectorAll('.action-btn.edit').forEach(btn => {
     btn.addEventListener('click', () => {
-      const field = btn.dataset.field;
-      const item = btn.closest('.vault-list__item');
-      const span = item.querySelector(`.vault-list__${field}`);
-      const currentValue = field === 'password' ? span.textContent.replace(/•/g, '') : span.textContent;
-
-      const input = document.createElement('input');
-      input.type = field === 'password' ? 'text' : 'text';
-      input.value = currentValue;
-      input.className = 'vault-item__input';
-
-      const actions = btn.parentElement;
-      actions.innerHTML = '';
-
-      const saveBtn = document.createElement('button');
-      saveBtn.textContent = 'SAVE';
-      saveBtn.className = 'btn btn--outline';
-
-      const cancelBtn = document.createElement('button');
-      cancelBtn.textContent = 'CANCEL';
-      cancelBtn.className = 'btn btn--outline';
-
-      actions.appendChild(saveBtn);
-      actions.appendChild(cancelBtn);
-
-      span.replaceWith(input);
+      const item = btn.closest('.vault-item');
+      const input = item.querySelector('.password-input');
+      input.removeAttribute('readonly');
+      input.type = 'text';
       input.focus();
 
-      cancelBtn.addEventListener('click', () => {
-        input.replaceWith(span);
-        actions.innerHTML = '';
-        const restore = document.createElement('button');
-        restore.textContent = 'EDIT';
-        restore.className = 'btn btn--outline btn-edit';
-        restore.dataset.field = field;
-        actions.appendChild(restore);
-        renderVaultEntries(entries); // full rerender for now
-      });
+      btn.innerHTML = '<i class="fas fa-save"></i>';
+      btn.title = "Enregistrer";
+      // Changer la classe temporairement pour savoir qu'on est en mode édition
+      btn.classList.add('editing');
 
-      saveBtn.addEventListener('click', async () => {
-        const id = item.dataset.id;
-        const newValue = input.value;
-
-        try {
-          const vault = await window.vaultManager.storage.loadVault();
-          const updated = vault.entries.map(e =>
-            e.id === id ? { ...e, [field]: newValue } : e
-          );
-          await window.vaultManager.storage.saveVault(updated, vault.meta);
-          const decrypted = await window.vaultManager.decryptAllEntries();
-          renderVaultEntries(decrypted);
-          showToast(`Champ "${field}" mis à jour.`, 'success');
-        } catch (err) {
-          console.error(err);
-          showToast('Erreur lors de la mise à jour.', 'error');
-        }
-      });
+      // Quand l'utilisateur valide (re-clic ou blur), on sauvegarde
+      function saveEdit() {
+        input.setAttribute('readonly', true);
+        input.type = 'password';
+        btn.innerHTML = '<i class="fas fa-edit"></i>';
+        btn.title = "Modifier";
+        btn.classList.remove('editing');
+        // Update storage
+        (async () => {
+          const id = item.dataset.id;
+          try {
+            const vault = await window.vaultManager.storage.loadVault();
+            const updated = vault.entries.map(e =>
+              e.id === id ? { ...e, password: input.value } : e
+            );
+            await window.vaultManager.storage.saveVault(updated, vault.meta);
+            const decrypted = await window.vaultManager.decryptAllEntries();
+            renderVaultEntries(decrypted);
+            showToast('Mot de passe mis à jour.', 'success');
+          } catch (err) {
+            console.error(err);
+            showToast('Erreur lors de la mise à jour.', 'error');
+          }
+        })();
+        input.removeEventListener('blur', saveEdit);
+        btn.removeEventListener('click', saveEdit);
+      }
+      input.addEventListener('blur', saveEdit);
+      btn.addEventListener('click', saveEdit);
     });
   });
 }

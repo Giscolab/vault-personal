@@ -1,4 +1,5 @@
 Structure du dossier
+
 C:.
 ¦   arborescence_vault.md
 ¦   CHANGELOG.md
@@ -26,10 +27,22 @@ C:.
 ¦   ¦       console.css
 ¦   ¦       export-import.css
 ¦   ¦       forms.css
+¦   ¦       header.css
+¦   ¦       metrics.css
+¦   ¦       modal.css
+¦   ¦       password-strength.css
+¦   ¦       password-tools.css
+¦   ¦       recommendations.css
+¦   ¦       score-box.css
+¦   ¦       security-chart.css
+¦   ¦       security-score.css
+¦   ¦       sidebar.css
 ¦   ¦       stats.css
 ¦   ¦       timer.css
 ¦   ¦       toast.css
+¦   ¦       toggle-switch.css
 ¦   ¦       vault.css
+¦   ¦       vulnerabilities.css
 ¦   ¦       
 ¦   +---icons
 ¦   ¦       android-chrome-192x192.png
@@ -45,6 +58,8 @@ C:.
 ¦   ¦       auth.css
 ¦   ¦       responsive.css
 ¦   ¦       sections.css
+¦   ¦       settings.css
+¦   ¦       wrapper.css
 ¦   ¦       
 ¦   +---utilities
 ¦           accessibility.css
@@ -81,6 +96,13 @@ C:.
 ¦   ¦       memory.js
 ¦   ¦       
 ¦   +---ui
+¦   ¦   ¦   modal.js
+¦   ¦   ¦   security-chart.js
+¦   ¦   ¦   security-report-init.js
+¦   ¦   ¦   security-report.js
+¦   ¦   ¦   sidebar.js
+¦   ¦   ¦   toggle-password.js
+¦   ¦   ¦   
 ¦   ¦   +---auth-screen
 ¦   ¦   ¦       auth-screen.js
 ¦   ¦   ¦       
@@ -91,11 +113,16 @@ C:.
 ¦   ¦           vault-list.js
 ¦   ¦           
 ¦   +---utils
-¦           idb-helper.js
-¦           import-csv.js
-¦           logger.js
-¦           password-generator.js
-¦           toast.js
+¦   ¦       clipboard.js
+¦   ¦       idb-helper.js
+¦   ¦       import-csv.js
+¦   ¦       logger.js
+¦   ¦       password-generator.js
+¦   ¦       toast.js
+¦   ¦       vault-stats.js
+¦   ¦       
+¦   +---vendor
+¦           Chart.min.js
 ¦           
 +---tests
         crypto.spec.js

@@ -1,101 +1,107 @@
 @layer components.forms {
-	.input {
-		width: 100%;
-		padding: var(--spacing-md);
-		margin-block: var(--spacing-sm) var(--spacing-md);
-		background-color: var(--color-surface-alt);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-md);
-		color: var(--color-text);
-		font: inherit;
-		transition: border-color var(--transition-base);
-	}
 
-	.input:focus {
-		border-color: var(--color-accent);
-		outline: none;
-	}
+  /* Champs de base */
+  .input,
+  .textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    margin-block: var(--spacing-sm) var(--spacing-md);
+    background-color: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text);
+    font: inherit;
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+    /* box-shadow: var(--shadow-sm); */ /* Optionnel, Enhanced look */
+  }
 
-	.input:focus-visible {
-		outline: 2px solid var(--color-accent);
-		outline-offset: 2px;
-	}
+  .input::placeholder,
+  .textarea::placeholder {
+    color: var(--color-text-muted);
+    opacity: 1;
+  }
 
-	.input:disabled {
-		background-color: var(--color-disabled-bg);
-		color: var(--color-disabled-text);
-		cursor: not-allowed;
-	}
+  .input:focus,
+  .textarea:focus {
+    border-color: var(--color-accent);
+    outline: none;
+    /* box-shadow: var(--shadow-md); */ /* Optionnel */
+  }
 
-	.input--inline {
-		display: inline-block;
-		width: auto;
-		min-width: 150px;
-	}
+  .input:focus-visible,
+  .textarea:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
 
-	.input+.btn {
-		margin-inline-start: var(--spacing-sm);
-	}
+  .input:disabled,
+  .textarea:disabled {
+    background-color: var(--color-disabled-bg);
+    color: var(--color-disabled-text);
+    cursor: not-allowed;
+  }
 
-	label+.input,
-	label+.textarea {
-		margin-block-start: var(--spacing-xs);
-	}
+  .input--inline {
+    display: inline-block;
+    width: auto;
+    min-width: 150px;
+  }
 
-	.input--readonly {
-		background-color: var(--color-disabled-bg);
-		color: var(--color-disabled-text);
-	}
-}
+  .input + .btn {
+    margin-inline-start: var(--spacing-sm);
+  }
 
-@layer components.forms {
-	.password-toggle {
-		display: flex;
-		align-items: center;
-		gap: var(--spacing-xs);
-		margin-inline-end: var(--spacing-xs);
-	}
+  label + .input,
+  label + .textarea {
+    margin-block-start: var(--spacing-xs);
+  }
 
-	.password-toggle__input {
-		accent-color: var(--color-primary);
-		width: 1.2em;
-		height: 1.2em;
-	}
+  .input--readonly {
+    background-color: var(--color-disabled-bg);
+    color: var(--color-disabled-text);
+  }
 
-	.password-toggle__label {
-		font-size: var(--fs-300);
-		color: var(--color-muted);
-		cursor: pointer;
-	}
+  .input--error {
+    border-color: var(--color-danger);
+    background-color: rgba(255, 85, 85, 0.05);
+  }
 
-	.input--error {
-		border-color: var(--color-danger);
-		background-color: rgba(255, 85, 85, 0.05);
-	}
+  .input--small {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--fs-300);
+  }
 
-	.textarea {
-		width: 100%;
-		padding: var(--spacing-md);
-		margin-block: var(--spacing-sm) var(--spacing-md);
-		background-color: var(--color-surface-alt);
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-md);
-		color: var(--color-text);
-		font: inherit;
-		transition: border-color var(--transition-base);
-		resize: vertical;
-		min-height: 6rem;
-	}
+  /* Password Toggle */
+  .password-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin-inline-end: var(--spacing-xs);
+  }
 
-	.input--small {
-		padding: var(--spacing-xs) var(--spacing-sm);
-		font-size: var(--fs-300);
-	}
+  .password-toggle__input {
+    accent-color: var(--color-primary);
+    width: 1.2em;
+    height: 1.2em;
+  }
+
+  .password-toggle__label {
+    font-size: var(--fs-300);
+    color: var(--color-text-muted); /* Correction ici */
+    cursor: pointer;
+  }
+
+  /* Textarea spécifique */
+  .textarea {
+    resize: vertical;
+    min-height: 6rem;
+  }
 }
 
 @media (max-width: 480px) {
-	.input {
-		font-size: var(--fs-300);
-		padding: var(--spacing-sm);
-	}
+  .input,
+  .textarea {
+    font-size: var(--fs-300);
+    padding: var(--spacing-sm);
+  }
 }

@@ -10,6 +10,7 @@
     border-top: 1px solid var(--color-border);
     line-height: var(--lh-normal);
     border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm); /* Ajout Enhanced */
   }
 
   .log-console::before {
@@ -32,6 +33,7 @@
 
   .log-entry--error {
     color: var(--color-danger);
+    font-weight: 600; /* Touche Enhanced */
   }
 
   .log-entry--success {
@@ -39,7 +41,7 @@
   }
 
   .log-entry--info {
-    color: var(--color-muted);
+    color: var(--color-text-muted); /* Correction token */
   }
 
   @keyframes fadeIn {

@@ -43,7 +43,11 @@
     background-color: var(--color-warning);
     color: var(--color-black);
   }
-
+  
+.toast.toast--info {
+  background-color: var(--color-accent);
+  color: var(--color-white);
+}
   .toast__close {
     background: none;
     border: none;

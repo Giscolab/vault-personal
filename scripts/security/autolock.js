@@ -73,10 +73,14 @@ _updateDisplay() {
 
 lockVault() {
   vaultManager.masterKey = null;
-  console.log("[LOCK] Clé supprimée ? ", vaultManager.masterKey === null); // ✅ ici
+  console.log("[LOCK] Clé supprimée ? ", vaultManager.masterKey === null);
   showAuthScreen();
+  // SÉCURITÉ : on vide le champ mot de passe maître
+  const pwInput = document.getElementById('master-password');
+  if (pwInput) pwInput.value = '';
   showToast('Session verrouillée automatiquement.', 'error');
 }
+
 
 _reset() {
   this._startTimer();
