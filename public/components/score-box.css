@@ -9,7 +9,7 @@
 			gap: 2rem;
 			margin-bottom: 2rem;
 			box-shadow: var(--shadow-sm);
-			border: 1px solid rgba(187, 134, 252, 0.1);
+			border: 1px solid rgb(187 134 252 / 10%);
 			position: relative;
 			overflow: hidden;
 		}
@@ -53,7 +53,7 @@
 
 		.score-box .icon {
 			font-size: 3.5rem;
-			color: rgba(187, 134, 252, 0.15);
+			color: rgb(187 134 252 / 15%);
 			flex-shrink: 0;
 		}
 
@@ -90,3 +90,4 @@
 			font-weight: bold;
 			color: var(--color-accent);
 		}
+}

@@ -30,7 +30,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 10px rgba(127, 57, 251, 0.3);
+    box-shadow: 0 4px 10px rgb(127 57 251 / 30%);
   }
 
   .logo i {
@@ -71,7 +71,7 @@
   }
 
   .sidebar nav a.active {
-    background: linear-gradient(90deg, rgba(127, 57, 251, 0.3), transparent);
+    background: linear-gradient(90deg, rgb(127 57 251 / 30%), transparent);
     color: var(--color-accent);
     border-left: 3px solid var(--color-accent);
     font-weight: 500;
@@ -146,7 +146,7 @@
     color: var(--color-danger);
   }
 
-  @media (max-width: 1024px) {
+  @media (width <= 1024px) {
     .sidebar {
       width: 80px;
       padding: var(--spacing-md) var(--spacing-xs);

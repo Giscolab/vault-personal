@@ -62,7 +62,7 @@ _stopDisplay() {
 _updateDisplay() {
   const minutes = Math.floor(this.remaining / 60000);
   const seconds = Math.floor((this.remaining % 60000) / 1000);
-  this.displayElement.textContent = `Verrouillage auto dans ${minutes}:${seconds.toString().padStart(2, '0')}`;
+	this.displayElement.innerHTML = `<i class="fas fa-lock"></i> Verrouillage auto dans ${minutes}:${seconds.toString().padStart(2, '0')}`;
   
   if (this.remaining <= 10000) {
     this.displayElement.classList.add('warning');

@@ -12,6 +12,7 @@
     color: var(--color-text-muted);
     margin-block-start: var(--spacing-xs);
   }
+
 .auth-form__field {
   display: flex;
   flex-direction: column;
@@ -32,9 +33,11 @@
   border-color: var(--color-accent);
   outline: none;
 }
+
 .auth-form__input:hover {
   border-color: var(--color-primary-hover);
 }
+
 .auth-form__input:disabled {
   background-color: var(--color-disabled-bg);
   color: var(--color-disabled-text);

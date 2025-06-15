@@ -5,10 +5,21 @@
 	<meta charset="UTF-8">
 	<title>Vault Personal</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<!-- 🛡️ CSP renforcée -->
-	<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; font-src https://cdnjs.cloudflare.com; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none';">
+<!-- 🛡️ CSP raisonnable pour développement -->
+<meta http-equiv="Content-Security-Policy" content="
+  default-src 'self';
+  script-src 'self' https://cdnjs.cloudflare.com;
+  style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+  font-src https://cdnjs.cloudflare.com;
+  img-src 'self' data:;
+  manifest-src 'self';
+  base-uri 'self';
+  form-action 'self';
+  object-src 'none';
+">
 	<!-- 🎨 Styles -->
-	<link rel="stylesheet" href="public/main.css" integrity="sha512-..." crossorigin="anonymous" />
+<link rel="stylesheet" href="public/main.css"crossorigin="anonymous" />
+
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 	<!-- 🔖 Favicons -->
 	<link rel="icon" href="public/icons/favicon.ico" type="image/x-icon">
@@ -23,19 +34,24 @@
 		<p>JavaScript requis pour utiliser l'application.</p>
 	</noscript>
 	<main id="app">
-		<!-- 🔐 Écran d’authentification -->
-		<section id="auth-screen">
-			<h1>Déverrouiller le coffre</h1>
-			<form id="auth-form" class="auth-form" autocomplete="off">
-				<input type="text" name="username" hidden autocomplete="username">
-				<input type="password" id="master-password" class="auth-form__input" autocomplete="off" required>
-				<div class="password-toggle">
-					<input type="checkbox" id="toggle-password-visibility" class="password-toggle__input">
-					<label for="toggle-password-visibility" class="password-toggle__label">Afficher le mot de passe</label>
-				</div>
-				<button type="submit" id="unlock-vault" class="btn btn--primary">Déverrouiller</button>
-			</form>
-		</section>
+<!-- 🔐 Écran d’authentification -->
+<section id="auth-screen">
+  <h1>Déverrouiller le coffre</h1>
+  <form id="auth-form" class="auth-form" autocomplete="off">
+    <input type="text" name="username" hidden autocomplete="username">
+
+    <label for="master-password" class="sr-only">Mot de passe maître</label>
+    <input type="password" id="master-password" class="auth-form__input" placeholder="Mot de passe maître" autocomplete="off" required>
+
+    <div class="password-toggle">
+      <input type="checkbox" id="toggle-password-visibility" class="password-toggle__input">
+      <label for="toggle-password-visibility" class="password-toggle__label">Afficher le mot de passe</label>
+    </div>
+
+    <button type="submit" id="unlock-vault" class="btn btn--primary">Déverrouiller</button>
+  </form>
+</section>
+
 		<!-- 🧩 Interface principale -->
 		<section id="vault-ui" hidden>
 			<div class="wrapper">
@@ -384,22 +400,30 @@
 							<div class="vulnerability-list">
 								<div class="vulnerability-item">
 									<div class="vuln-info">
-										<div class="vuln-icon" style="background: rgba(255,152,0,0.15); color: #ff9800;">
-											<i class="fas fa-unlock"></i>
-										</div>
-										<div class="vuln-details">
-											<strong>Compte de réseau social</strong>
-											<span>Mot de passe : "password123" - Très faible</span>
-										</div>
-									</div>
-									<div class="vuln-actions">
-										<button class="vuln-action-btn"><i class="fas fa-random"></i> Générer</button>
-									</div>
-								</div>
-								<div class="vulnerability-item">
-									<div class="vuln-info">
-										<div class="vuln-icon" style="background: rgba(255,152,0,0.15); color: #ff9800;">
-											<i class="fas fa-unlock"></i>
+<div class="vuln-icon vuln-high">
+  <i class="fas fa-unlock" aria-hidden="true"></i>
+</div>
+<div class="vuln-details">
+  <strong>Compte de réseau social</strong>
+  <span>Mot de passe : "password123" – Très faible</span>
+</div>
+</div>
+<div class="vuln-actions">
+  <button
+    class="vuln-action-btn"
+    type="button"
+    title="Générer un mot de passe sécurisé"
+    aria-label="Générer un mot de passe sécurisé"
+  >
+    <i class="fas fa-random" aria-hidden="true"></i> Générer
+  </button>
+</div>
+</div>
+<div class="vulnerability-item">
+  <div class="vuln-info">
+    <div class="vuln-icon vuln-high">
+      <i class="fas fa-unlock" aria-hidden="true"></i>
+
 										</div>
 										<div class="vuln-details">
 											<strong>Achat en ligne</strong>
@@ -519,7 +543,8 @@
 											<div class="setting-description">Temps avant verrouillage automatique</div>
 										</div>
 										<div class="setting-control">
-											<select style="width: 120px;">
+<select class="dropdown-small">
+
 												<option>1 minute</option>
 												<option>2 minutes</option>
 												<option selected>5 minutes</option>
@@ -645,7 +670,8 @@
 										<div class="setting-description">Modifier l'apparence de Vault</div>
 									</div>
 									<div class="setting-control">
-										<select style="width: 140px;">
+<select class="dropdown-medium">
+
 											<option selected>Thème sombre</option>
 											<option>Thème clair</option>
 											<option>Par défaut du système</option>
@@ -654,13 +680,14 @@
 								</div>
 							</div>
 							<!-- Zone dangereuse -->
-							<div class="settings-card" style="border: 1px solid rgba(211, 47, 47, 0.3);">
-								<div class="settings-header">
-									<div class="settings-icon" style="background: rgba(211, 47, 47, 0.15); color: var(--color-danger);">
-										<i class="fas fa-exclamation-triangle"></i>
-									</div>
-									<h3 class="settings-title" style="color: var(--color-danger);">Zone critique</h3>
-								</div>
+<div class="settings-card settings-card--danger">
+  <div class="settings-header">
+    <div class="settings-icon settings-icon--danger">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h3 class="settings-title settings-title--danger">Zone critique</h3>
+  </div>
+
 								<div class="setting-item">
 									<div class="setting-info">
 										<div class="setting-label">Supprimer le compte</div>
@@ -694,7 +721,8 @@
 										<label for="password">Mot de passe</label>
 										<div class="password-input-wrapper">
 											<input type="password" id="password" placeholder="Créez un mot de passe fort">
-											<button class="toggle-password"><i class="fas fa-eye"></i></button>
+<button type="button" class="toggle-password"><i class="fas fa-eye"></i></button>
+
 										</div>
 									</div>
 									<div class="form-group">
@@ -721,10 +749,6 @@
 							</form>
 						</div>
 					</div>
-					<div class="toast" id="toast">
-						<i class="fas fa-check-circle"></i>
-						<span>Mot de passe copié dans le presse-papiers !</span>
-					</div>
 				</div>
 			</div>
 		</section>
@@ -733,29 +757,60 @@
 			<div class="modal">
 				<div class="modal-header">
 					<h3>Changer le mot de passe principal</h3>
-					<button class="close-modal" id="closeChangeModal"><i class="fas fa-times"></i></button>
-				</div>
-				<div class="modal-body">
-					<div class="form-group">
-						<label for="currentPassword">Mot de passe actuel</label>
-						<div class="password-input-wrapper">
-							<input type="password" id="currentPassword">
-							<button class="toggle-password"><i class="fas fa-eye"></i></button>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="newPassword">Nouveau mot de passe</label>
-						<div class="password-input-wrapper">
-							<input type="password" id="newPassword">
-							<button class="toggle-password"><i class="fas fa-eye"></i></button>
-						</div>
-					</div>
-					<div class="form-group">
-						<label for="confirmPassword">Confirmer le nouveau mot de passe</label>
-						<div class="password-input-wrapper">
-							<input type="password" id="confirmPassword">
-							<button class="toggle-password"><i class="fas fa-eye"></i></button>
-						</div>
+<button
+  class="close-modal"
+  id="closeChangeModal"
+  type="button"
+  title="Fermer la fenêtre"
+  aria-label="Fermer la fenêtre"
+>
+  <i class="fas fa-times" aria-hidden="true"></i>
+</button>
+
+</div>
+<div class="modal-body">
+  <div class="form-group">
+    <label for="currentPassword">Mot de passe actuel</label>
+    <div class="password-input-wrapper">
+      <input type="password" id="currentPassword" name="currentPassword" aria-label="Mot de passe actuel">
+      <button
+        type="button"
+        class="toggle-password"
+        title="Afficher ou masquer le mot de passe"
+        aria-label="Afficher ou masquer le mot de passe">
+        <i class="fas fa-eye" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="newPassword">Nouveau mot de passe</label>
+    <div class="password-input-wrapper">
+      <input type="password" id="newPassword" name="newPassword" aria-label="Nouveau mot de passe">
+      <button
+        type="button"
+        class="toggle-password"
+        title="Afficher ou masquer le mot de passe"
+        aria-label="Afficher ou masquer le mot de passe">
+        <i class="fas fa-eye" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="confirmPassword">Confirmer le nouveau mot de passe</label>
+    <div class="password-input-wrapper">
+      <input type="password" id="confirmPassword" name="confirmPassword" aria-label="Confirmation du mot de passe">
+      <button
+        type="button"
+        class="toggle-password"
+        title="Afficher ou masquer le mot de passe"
+        aria-label="Afficher ou masquer le mot de passe">
+        <i class="fas fa-eye" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
 					</div>
 					<div class="strength-indicator">
 						<span>Sécurité du mot de passe :</span>
@@ -772,15 +827,15 @@
 				</div>
 			</div>
 		</div>
-		<div class="auto-lock">
-			<i class="fas fa-lock"></i> Auto-lock in 2:45
+		<div class="auto-lock" id="autolock-timer">
+			<i class="fas fa-lock"></i>
 		</div>
+
 		<!-- ⚙️ Scripts -->
 		<script src="scripts/vendor/chart.min.js"></script>
-		<script type="module" src="scripts/app.js" integrity="sha512-..." crossorigin="anonymous"></script>
+		<script type="module" src="scripts/app.js" crossorigin="anonymous"></script>
 		<script type="module" src="scripts/ui/security-report-init.js"></script>
 		<!-- 📺 UI auxiliaire -->
-		<div id="autolock-timer"></div>
 		<div id="log-console"></div>
 	</main>
 </body>

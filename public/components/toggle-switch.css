@@ -15,14 +15,14 @@
   .toggle-slider {
     position: absolute;
     cursor: pointer;
-    top: 0; left: 0; right: 0; bottom: 0;
+    inset: 0;
     background-color: var(--color-surface-alt);
     border-radius: 24px;
     border: 1.5px solid var(--color-border); /* Optionnel pour un effet Enhanced net */
     transition: var(--transition-base);
   }
 
-  .toggle-slider:before {
+  .toggle-slider::before {
     position: absolute;
     content: "";
     height: 18px;
@@ -38,7 +38,7 @@
     background-color: var(--color-accent);
   }
 
-  input:checked + .toggle-slider:before {
+  input:checked + .toggle-slider::before {
     transform: translateX(26px);
   }
 

@@ -37,7 +37,7 @@
 
 		.search-bar input:focus {
 			outline: none;
-			box-shadow: 0 0 0 2px rgba(187, 134, 252, 0.3);
+			box-shadow: 0 0 0 2px rgb(187 134 252 / 30%);
 		}
 
 		.search-bar i {
@@ -58,10 +58,10 @@
 			font-weight: 500;
 			cursor: pointer;
 			transition: all var(--transition);
-			box-shadow: 0 4px 12px rgba(127, 57, 251, 0.3);
+			box-shadow: 0 4px 12px rgb(127 57 251 / 30%);
 		}
 
 		.add-button:hover {
 			transform: translateY(-2px);
-			box-shadow: 0 6px 15px rgba(127, 57, 251, 0.4);
+			box-shadow: 0 6px 15px rgb(127 57 251 / 40%);
 		}

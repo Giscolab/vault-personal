@@ -1,3 +1,4 @@
+console.log('[✔] Chargement depuis localStorage:', !!localStorage.getItem('vault'));
 /**
  * Classe représentant un coffre local manipulé en mémoire.
  * Ne fait pas de persistance ni de chiffrement directement.

@@ -4,6 +4,7 @@
     gap: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
   }
+
   .score-card {
     flex: 1;
     background-color: var(--color-surface);
@@ -17,24 +18,30 @@
     position: relative;
     overflow: hidden;
   }
+
   .score-card::before {
     content: "";
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 4px;
   }
+
   .score-card.security::before {
     background: linear-gradient(90deg, var(--color-accent-alt), var(--color-accent));
   }
+
   .score-card.weak::before {
     background: var(--color-warning);
   }
+
   .score-card.reused::before {
     background: var(--color-danger);
   }
+
   .score-card.old::before {
     background: var(--color-text-muted); /* Correction */
   }
+
   .score-value {
     font-size: 3.5rem;
     font-weight: 700;
@@ -44,17 +51,20 @@
   .score-weak .score-value { color: var(--color-warning);}
   .score-reused .score-value { color: var(--color-danger);}
   .score-old .score-value { color: var(--color-text-muted);}
+
   .score-label {
     font-size: var(--fs-500);
     color: var(--color-text-muted); /* Correction */
     margin-bottom: 1rem;
   }
+
   .score-description {
     font-size: var(--fs-300);
     color: var(--color-text-muted); /* Correction */
     max-width: 300px;
   }
-  @media (max-width: 768px) {
+
+  @media (width <= 768px) {
     .score-overview { flex-direction: column; }
   }
 }

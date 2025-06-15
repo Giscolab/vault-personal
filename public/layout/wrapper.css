@@ -4,6 +4,7 @@
     height: 100vh;
     overflow: hidden;
   }
+
   .main {
     flex: 1;
     padding: var(--spacing-lg) calc(var(--spacing-lg) * 2);
@@ -12,7 +13,8 @@
     min-width: 0;
     background-color: var(--color-bg);
   }
-  @media (max-width: 768px) {
+
+  @media (width <= 768px) {
     .main {
       padding: var(--spacing-md);
     }

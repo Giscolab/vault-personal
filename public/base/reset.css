@@ -7,13 +7,13 @@
 
   :where(html) {
     scroll-behavior: smooth;
-    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   :where(body) {
     min-height: 100vh;
     min-height: 100dvh;
-    text-rendering: optimizeSpeed;
+    text-rendering: optimizespeed;
   }
 
   :where(img, picture, svg) {
@@ -27,6 +27,7 @@
     color: inherit;
     background: none;
     border: none;
+
     /* outline: none;  PAS besoin, focus visible reste géré ailleurs ! */
   }
 

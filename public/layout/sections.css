@@ -14,6 +14,7 @@
   line-height: var(--lh-tight);
   font-weight: 600;
 }
+
 .section__title--secondary {
   font-size: var(--fs-400);
   text-decoration: underline;
@@ -23,6 +24,7 @@
   .section__title--center {
   text-align: center;
 }
+
 .section--transparent {
   background-color: transparent;
   border: none;

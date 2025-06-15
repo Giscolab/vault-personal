@@ -1,5 +1,4 @@
 @layer components.forms {
-
   /* Champs de base */
   .input,
   .textarea {
@@ -12,7 +11,18 @@
     color: var(--color-text);
     font: inherit;
     transition: border-color var(--transition-base), box-shadow var(--transition-base);
-    /* box-shadow: var(--shadow-sm); */ /* Optionnel, Enhanced look */
+  }
+
+  /* Textarea spécifique */
+  .textarea {
+    resize: vertical;
+    min-height: 6rem;
+  }
+
+  /* Label suivi d’un champ */
+  label + .input,
+  label + .textarea {
+    margin-block-start: var(--spacing-xs);
   }
 
   .input::placeholder,
@@ -25,7 +35,6 @@
   .textarea:focus {
     border-color: var(--color-accent);
     outline: none;
-    /* box-shadow: var(--shadow-md); */ /* Optionnel */
   }
 
   .input:focus-visible,
@@ -51,11 +60,6 @@
     margin-inline-start: var(--spacing-sm);
   }
 
-  label + .input,
-  label + .textarea {
-    margin-block-start: var(--spacing-xs);
-  }
-
   .input--readonly {
     background-color: var(--color-disabled-bg);
     color: var(--color-disabled-text);
@@ -63,7 +67,7 @@
 
   .input--error {
     border-color: var(--color-danger);
-    background-color: rgba(255, 85, 85, 0.05);
+    background-color: rgb(255 85 85 / 5%);
   }
 
   .input--small {
@@ -87,18 +91,12 @@
 
   .password-toggle__label {
     font-size: var(--fs-300);
-    color: var(--color-text-muted); /* Correction ici */
+    color: var(--color-text-muted);
     cursor: pointer;
-  }
-
-  /* Textarea spécifique */
-  .textarea {
-    resize: vertical;
-    min-height: 6rem;
   }
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
   .input,
   .textarea {
     font-size: var(--fs-300);

@@ -22,7 +22,7 @@
     box-shadow: var(--shadow-md);
     animation: slide var(--transition-toast) ease-out forwards;
     backdrop-filter: blur(4px);
-	word-break: break-word;
+    overflow-wrap: break-word; /* remplacement de word-break */
   }
 
   .toast i {
@@ -43,11 +43,12 @@
     background-color: var(--color-warning);
     color: var(--color-black);
   }
-  
-.toast.toast--info {
-  background-color: var(--color-accent);
-  color: var(--color-white);
-}
+
+  .toast.toast--info {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+  }
+
   .toast__close {
     background: none;
     border: none;
@@ -63,6 +64,7 @@
       opacity: 0;
       transform: translateY(40px);
     }
+
     100% {
       opacity: 1;
       transform: translateY(0);

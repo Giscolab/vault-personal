@@ -1,8 +1,14 @@
 @layer components.vault {
   .vault-list {
     list-style: none;
-    padding: 0;
     margin-block-start: var(--spacing-md);
+    background-color: var(--color-surface);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    box-shadow: var(--shadow-sm);
   }
 
   .vault-list--grid {
@@ -76,7 +82,7 @@
   .vault-list__username,
   .vault-list__password {
     font-size: var(--fs-300);
-    color: var(--color-text-muted);   /* Correction ici */
+    color: var(--color-text-muted);
     font-family: var(--font-mono);
     white-space: nowrap;
     overflow: hidden;
@@ -101,166 +107,164 @@
     cursor: pointer;
   }
 
+  .vault-actions button {
+    background: none;
+    border: none;
+    color: var(--color-muted);
+    cursor: pointer;
+    transition: color var(--transition-base);
+    font-size: var(--font-size-sm);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .vault-item button {
+    background-color: rgb(255 255 255 / 8%);
+    color: var(--color-text);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    transition: all var(--transition-base);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
   .vault-list__actions button:hover {
     background-color: var(--color-surface);
     filter: brightness(1.2);
   }
 
-  .vault-item--readonly .vault-list__username,
-  .vault-item--readonly .vault-list__password {
-    color: var(--color-disabled-text);
-    background: transparent;
-    user-select: none;
+ .vault-item--readonly .vault-list__username,
+.vault-item--readonly .vault-list__password {
+  color: var(--color-disabled-text);
+  background: transparent;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+
+  /* === Enhanced Vault List === */
+  .vault-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
   }
-  
-/* === Style Enhanced Vault List === */
-.vault-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.25rem;
-}
 
-.vault-header h3 {
-  font-size: var(--font-size-md);
-  font-weight: 600;
-}
+  .vault-header h3 {
+    font-size: var(--font-size-md);
+    font-weight: 600;
+  }
 
-.vault-actions {
-  display: flex;
-  gap: 0.75rem;
-}
+  .vault-actions {
+    display: flex;
+    gap: 0.75rem;
+  }
 
-.vault-actions button {
-  background: none;
-  border: none;
-  color: var(--color-muted);
-  cursor: pointer;
-  transition: color var(--transition-base);
-  font-size: var(--font-size-sm);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+  .vault-actions button:hover {
+    color: var(--color-accent);
+  }
 
-.vault-actions button:hover {
-  color: var(--color-accent);
-}
+  .vault-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-surface-alt);
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+    border: 1px solid transparent;
+  }
 
-.vault-list {
-  background-color: var(--color-surface);
-  border-radius: var(--radius-md);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  box-shadow: var(--shadow-sm);
-}
+  .vault-item:hover {
+    border-color: rgb(187 134 252 / 30%);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
+  }
 
-.vault-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--color-surface-alt);
-  padding: 1.25rem;
-  border-radius: var(--radius-md);
-  transition: all var(--transition-base);
-  border: 1px solid transparent;
-}
+  .vault-item .account-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
 
-.vault-item:hover {
-  border-color: rgba(187, 134, 252, 0.3);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+  .account-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+  }
 
-.vault-item .account-info {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
+  .bank-icon {
+    background: rgb(56 142 60 / 15%);
+    color: #4caf50;
+  }
 
-.account-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.25rem;
-}
+  .email-icon {
+    background: rgb(33 150 243 / 15%);
+    color: #2196f3;
+  }
 
-.bank-icon {
-  background: rgba(56, 142, 60, 0.15);
-  color: #4caf50;
-}
-.email-icon {
-  background: rgba(33, 150, 243, 0.15);
-  color: #2196f3;
-}
-.cloud-icon {
-  background: rgba(156, 39, 176, 0.15);
-  color: #9c27b0;
-}
-.social-icon {
-  background: rgba(244, 67, 54, 0.15);
-  color: #f44336;
-}
+  .cloud-icon {
+    background: rgb(156 39 176 / 15%);
+    color: #9c27b0;
+  }
 
-.account-details {
-  flex: 1;
-}
+  .social-icon {
+    background: rgb(244 67 54 / 15%);
+    color: #f44336;
+  }
 
-.vault-item .account-info strong {
-  display: block;
-  color: white;
-  font-weight: 500;
-  margin-bottom: 0.15rem;
-}
-.vault-item .account-info span {
-  color: var(--color-muted);
-  font-size: var(--font-size-sm);
-  display: block;
-}
+  .account-details {
+    flex: 1;
+  }
 
-.vault-item .actions {
-  display: flex;
-  gap: 0.75rem;
-}
+  .vault-item .account-info strong {
+    display: block;
+    color: white;
+    font-weight: 500;
+    margin-bottom: 0.15rem;
+  }
 
-.vault-item button {
-  background-color: rgba(255, 255, 255, 0.08);
-  color: var(--color-text);
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: 0.6rem 1rem;
-  cursor: pointer;
-  font-size: var(--font-size-sm);
-  font-weight: 500;
-  transition: all var(--transition-base);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
+  .vault-item .account-info span {
+    color: var(--color-muted);
+    font-size: var(--font-size-sm);
+    display: block;
+  }
 
-.vault-item button.copy:hover {
-  background-color: rgba(187, 134, 252, 0.15);
-  color: var(--color-accent);
-}
-.vault-item button.edit:hover {
-  background-color: rgba(33, 150, 243, 0.15);
-  color: #2196f3;
-}
-  
-/* Compteur dynamique enhanced */
-.count-badge {
-  background: var(--color-primary, #4f8cff);
-  color: #fff;
-  border-radius: 1em;
-  padding: 0.15em 0.7em;
-  font-size: 0.95em;
-  margin-left: 0.5em;
-  vertical-align: middle;
-  font-weight: bold;
+  .vault-item .actions {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .vault-item button.copy:hover {
+    background-color: rgb(187 134 252 / 15%);
+    color: var(--color-accent);
+  }
+
+  .vault-item button.edit:hover {
+    background-color: rgb(33 150 243 / 15%);
+    color: #2196f3;
+  }
+
+  /* Compteur dynamique enhanced */
+  .count-badge {
+    background: var(--color-primary, #4f8cff);
+    color: #fff;
+    border-radius: 1em;
+    padding: 0.15em 0.7em;
+    font-size: 0.95em;
+    margin-left: 0.5em;
+    vertical-align: middle;
+    font-weight: bold;
+  }
 }

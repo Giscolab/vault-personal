@@ -6,15 +6,15 @@
     --z-index-overlay: 900;
 
     /* Ombres */
-    --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.15);      /* Enhanced */
-    --shadow-md: 0 8px 20px rgba(0, 0, 0, 0.25);     /* Enhanced */
-    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.3);      /* Projet de base */
+    --shadow-sm: 0 4px 6px rgb(0 0 0 / 15%);      /* Enhanced */
+    --shadow-md: 0 8px 20px rgb(0 0 0 / 25%);     /* Enhanced */
+    --shadow-lg: 0 4px 12px rgb(0 0 0 / 30%);      /* Projet de base */
+
     /* Tu peux garder les 2 shadow-sm et md si tu veux les deux versions, sinon remplace partout par les nouveaux */
 
     /* Typographie */
-    --font-sans: 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif;
-    --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
-
+    --font-sans: 'Segoe UI', system-ui, -apple-system, roboto, sans-serif;
+    --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', menlo, consolas, monospace;
     --fs-200: 0.75rem;
     --fs-300: 0.875rem;
     --fs-400: 1rem;
@@ -22,13 +22,11 @@
     --fs-600: 1.5rem;
     --fs-700: 2rem;
     --fs-800: 2.5rem;
-
     --font-size-base: 1rem;
     --font-size-sm: 0.875rem;
     --font-size-md: 1.125rem;
     --font-size-lg: 1.5rem;
     --font-size-xl: 2.5rem;
-
     --lh-tight: 1.2;
     --lh-normal: 1.5;
 
@@ -73,7 +71,7 @@
     --color-surface: #1e1e1e;
     --color-surface-alt: #242424;
     --color-surface-light: #2d2d2d;
-    --color-overlay: rgba(0, 0, 0, 0.6);
+    --color-overlay: rgb(0 0 0 / 60%);
     --color-text: #e0e0e0;
     --color-text-muted: #999;
     --color-border: #333;
