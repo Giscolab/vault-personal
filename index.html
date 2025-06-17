@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vault Personal - Product Roadmap</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Vault Personal – Enhanced Dark UI Theme */
+    :root {
+      --color-bg: #121212;
+      --color-surface: #1e1e1e;
+      --color-surface-alt: #242424;
+      --color-surface-light: #2d2d2d;
+      --color-text: #e0e0e0;
+      --color-muted: #999;
+      --color-accent: #bb86fc;
+      --color-accent-alt: #7f39fb;
+      --color-dashboard: #bb86fc;
+      --color-passwords: #4caf50;
+      --color-security: #ff9800;
+      --color-settings: #2196f3;
+      --color-danger: #d32f2f;
+      --color-success: #4caf50;
+      --color-warning: #ff9800;
+      --color-border: #333;
+      --radius-md: 12px;
+      --radius-sm: 6px;
+      --spacing: 1.25rem;
+      --font-size-base: 1rem;
+      --font-size-sm: 0.875rem;
+      --font-size-md: 1.125rem;
+      --font-size-lg: 1.5rem;
+      --font-size-xl: 2.5rem;
+      --transition: 0.2s ease-in-out;
+      --z-toast: 1000;
+      --shadow-sm: 0 4px 6px rgba(0,0,0,0.15);
+      --shadow-md: 0 8px 20px rgba(0,0,0,0.25);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      height: 100%;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      font-size: var(--font-size-base);
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .roadmap-header {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      padding: 3rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .roadmap-header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--color-accent-alt), var(--color-accent));
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--color-accent-alt), var(--color-accent));
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 15px rgba(127, 57, 251, 0.4);
+    }
+
+    .logo i {
+      font-size: 2rem;
+      color: white;
+    }
+
+    .roadmap-header h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(90deg, var(--color-accent), var(--color-accent-alt));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .roadmap-header p {
+      font-size: 1.2rem;
+      max-width: 700px;
+      margin: 0 auto;
+      color: var(--color-muted);
+    }
+
+    /* Navigation */
+    .page-nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all var(--transition);
+      border: none;
+      background-color: var(--color-surface-alt);
+      color: var(--color-text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-btn.active, .nav-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-btn.dashboard.active, .nav-btn.dashboard:hover {
+      background: linear-gradient(135deg, var(--color-accent-alt), var(--color-accent));
+      color: white;
+    }
+
+    .nav-btn.passwords.active, .nav-btn.passwords:hover {
+      background: linear-gradient(135deg, #2e7d32, #4caf50);
+      color: white;
+    }
+
+    .nav-btn.security.active, .nav-btn.security:hover {
+      background: linear-gradient(135deg, #f57c00, #ff9800);
+      color: white;
+    }
+
+    .nav-btn.settings.active, .nav-btn.settings:hover {
+      background: linear-gradient(135deg, #1565c0, #2196f3);
+      color: white;
+    }
+
+    /* Main Content */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page-section {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .section-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .dashboard .section-icon {
+      background: rgba(187, 134, 252, 0.15);
+      color: var(--color-dashboard);
+    }
+
+    .passwords .section-icon {
+      background: rgba(76, 175, 80, 0.15);
+      color: var(--color-passwords);
+    }
+
+    .security .section-icon {
+      background: rgba(255, 152, 0, 0.15);
+      color: var(--color-security);
+    }
+
+    .settings .section-icon {
+      background: rgba(33, 150, 243, 0.15);
+      color: var(--color-settings);
+    }
+
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+
+    .section-description {
+      color: var(--color-muted);
+      margin-top: 0.5rem;
+      max-width: 800px;
+    }
+
+    /* Features Grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .feature-card {
+      background-color: var(--color-surface);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      transition: all var(--transition);
+      border-left: 4px solid;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .dashboard .feature-card {
+      border-left-color: var(--color-dashboard);
+    }
+
+    .passwords .feature-card {
+      border-left-color: var(--color-passwords);
+    }
+
+    .security .feature-card {
+      border-left-color: var(--color-security);
+    }
+
+    .settings .feature-card {
+      border-left-color: var(--color-settings);
+    }
+
+    .feature-icon {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .dashboard .feature-icon {
+      color: var(--color-dashboard);
+    }
+
+    .passwords .feature-icon {
+      color: var(--color-passwords);
+    }
+
+    .security .feature-icon {
+      color: var(--color-security);
+    }
+
+    .settings .feature-icon {
+      color: var(--color-settings);
+    }
+
+    .feature-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+    }
+
+    .feature-description {
+      color: var(--color-muted);
+      font-size: var(--font-size-sm);
+    }
+
+    /* Visual Timeline */
+    .timeline-container {
+      margin: 4rem 0;
+      padding: 2rem 0;
+      position: relative;
+    }
+
+    .timeline-title {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .timeline-title::after {
+      content: "";
+      position: absolute;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--color-accent-alt), var(--color-accent));
+      border-radius: 2px;
+    }
+
+    .timeline {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 40px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--color-surface-alt);
+      z-index: 1;
+    }
+
+    .timeline-item {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: 23%;
+    }
+
+    .timeline-point {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .dashboard .timeline-point {
+      background: var(--color-dashboard);
+      box-shadow: 0 0 0 8px rgba(187, 134, 252, 0.2);
+    }
+
+    .passwords .timeline-point {
+      background: var(--color-passwords);
+      box-shadow: 0 0 0 8px rgba(76, 175, 80, 0.2);
+    }
+
+    .security .timeline-point {
+      background: var(--color-security);
+      box-shadow: 0 0 0 8px rgba(255, 152, 0, 0.2);
+    }
+
+    .settings .timeline-point {
+      background: var(--color-settings);
+      box-shadow: 0 0 0 8px rgba(33, 150, 243, 0.2);
+    }
+
+    .timeline-label {
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    .timeline-description {
+      color: var(--color-muted);
+      font-size: var(--font-size-sm);
+      margin-top: 5px;
+    }
+
+    /* Footer */
+    .roadmap-footer {
+      text-align: center;
+      padding: 2rem;
+      margin-top: 3rem;
+      border-top: 1px solid var(--color-border);
+      color: var(--color-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .footer-link {
+      color: var(--color-accent);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .footer-link:hover {
+      color: var(--color-accent-alt);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .timeline {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .timeline::before {
+        display: none;
+      }
+      
+      .timeline-item {
+        width: 100%;
+        text-align: left;
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        align-items: center;
+      }
+      
+      .timeline-point {
+        margin: 0;
+        flex-shrink: 0;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .roadmap-header h1 {
+        font-size: 2rem;
+      }
+    }
+
+    /* Scrollbar styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--color-surface-alt);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--color-surface-light);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--color-accent);
+    }
+  </style>
+</head>
+<body>
+  <header class="roadmap-header">
+    <div class="logo-container">
+      <div class="logo">
+        <i class="fas fa-lock"></i>
+      </div>
+      <div>
+        <h1>Vault Personal</h1>
+        <p>Roadmap complète des fonctionnalités et caractéristiques</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-nav">
+    <button class="nav-btn dashboard active" data-page="dashboard">
+      <i class="fas fa-home"></i> Dashboard
+    </button>
+    <button class="nav-btn passwords" data-page="passwords">
+      <i class="fas fa-key"></i> Passwords
+    </button>
+    <button class="nav-btn security" data-page="security">
+      <i class="fas fa-shield-alt"></i> Security Report
+    </button>
+    <button class="nav-btn settings" data-page="settings">
+      <i class="fas fa-cog"></i> Settings
+    </button>
+  </div>
+
+  <div class="container">
+    <!-- Dashboard Section -->
+    <section id="dashboard" class="page-section dashboard active">
+      <div class="section-header">
+        <div class="section-icon">
+          <i class="fas fa-home"></i>
+        </div>
+        <div>
+          <h2 class="section-title">Dashboard</h2>
+          <p class="section-description">Page d'accueil offrant une vue d'ensemble de la sécurité des mots de passe avec des visualisations clés et des indicateurs de performance</p>
+        </div>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-paint-brush"></i>
+          </div>
+          <h3 class="feature-title">Design moderne et raffiné</h3>
+          <p class="feature-description">Utilisation de dégradés subtils, d'ombres portées et d'arrondis cohérents pour une interface élégante et moderne</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-mobile-alt"></i>
+          </div>
+          <h3 class="feature-title">Responsive design optimisé</h3>
+          <p class="feature-description">Adaptation parfaite pour tous les écrans, avec sidebar réductible sur mobile et réorganisation des éléments en colonne</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3 class="feature-title">Indicateurs de sécurité enrichis</h3>
+          <p class="feature-description">Jauge circulaire animée pour le score de sécurité et cartes de métriques avec actions rapides</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <h3 class="feature-title">Expérience utilisateur améliorée</h3>
+          <p class="feature-description">Affichage du compte utilisateur dans la sidebar et effets de survol interactifs sur tous les éléments cliquables</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-eye"></i>
+          </div>
+          <h3 class="feature-title">Détails visuels supplémentaires</h3>
+          <p class="feature-description">Barre de défilement stylisée, séparateurs et bordures subtiles, et animation de la minuterie d'auto-verrouillage</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-tachometer-alt"></i>
+          </div>
+          <h3 class="feature-title">Vue d'ensemble complète</h3>
+          <p class="feature-description">Accès rapide aux statistiques essentielles : mots de passe totaux, faibles, réutilisés et anciens</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Passwords Section -->
+    <section id="passwords" class="page-section passwords">
+      <div class="section-header">
+        <div class="section-icon">
+          <i class="fas fa-key"></i>
+        </div>
+        <div>
+          <h2 class="section-title">Gestion des Mots de Passe</h2>
+          <p class="section-description">Interface complète pour gérer, organiser et sécuriser tous vos mots de passe en un seul endroit</p>
+        </div>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-search"></i>
+          </div>
+          <h3 class="feature-title">Recherche et filtrage avancés</h3>
+          <p class="feature-description">Barre de recherche en temps réel et filtres par catégorie pour trouver rapidement vos identifiants</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-plus-circle"></i>
+          </div>
+          <h3 class="feature-title">Ajout simplifié</h3>
+          <p class="feature-description">Modal élégant pour ajouter de nouveaux mots de passe avec tous les champs nécessaires</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-lock"></i>
+          </div>
+          <h3 class="feature-title">Sécurité renforcée</h3>
+          <p class="feature-description">Masquage des mots de passe avec fonction de visualisation et indicateurs de force visuels</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-copy"></i>
+          </div>
+          <h3 class="feature-title">Actions rapides</h3>
+          <p class="feature-description">Copie, modification et suppression simplifiées avec animations de feedback</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-tag"></i>
+          </div>
+          <h3 class="feature-title">Organisation par catégories</h3>
+          <p class="feature-description">Icônes spécifiques pour chaque type de service (banque, email, cloud, etc.)</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-mobile"></i>
+          </div>
+          <h3 class="feature-title">Design responsive</h3>
+          <p class="feature-description">Adaptation parfaite aux mobiles avec sidebar réductible et disposition optimisée</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Security Report Section -->
+    <section id="security" class="page-section security">
+      <div class="section-header">
+        <div class="section-icon">
+          <i class="fas fa-shield-alt"></i>
+        </div>
+        <div>
+          <h2 class="section-title">Rapport de Sécurité</h2>
+          <p class="section-description">Analyse approfondie de la sécurité de vos mots de passe avec détection des vulnérabilités et recommandations</p>
+        </div>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-chart-pie"></i>
+          </div>
+          <h3 class="feature-title">Vue d'ensemble de la sécurité</h3>
+          <p class="feature-description">Score de sécurité global avec indicateur visuel et statistiques détaillées</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-history"></i>
+          </div>
+          <h3 class="feature-title">Analyse historique</h3>
+          <p class="feature-description">Graphique interactif montrant l'évolution de votre sécurité au fil du temps</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-bug"></i>
+          </div>
+          <h3 class="feature-title">Détection des vulnérabilités</h3>
+          <p class="feature-description">Identification des problèmes critiques classés par sévérité avec explications</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <h3 class="feature-title">Mots de passe faibles</h3>
+          <p class="feature-description">Liste des comptes compromis avec options de génération de nouveaux mots de passe</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-lightbulb"></i>
+          </div>
+          <h3 class="feature-title">Recommandations personnalisées</h3>
+          <p class="feature-description">Suggestions pratiques pour améliorer votre sécurité globale</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-tasks"></i>
+          </div>
+          <h3 class="feature-title">Actions rapides</h3>
+          <p class="feature-description">Résolution des problèmes directement depuis le rapport</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Settings Section -->
+    <section id="settings" class="page-section settings">
+      <div class="section-header">
+        <div class="section-icon">
+          <i class="fas fa-cog"></i>
+        </div>
+        <div>
+          <h2 class="section-title">Paramètres</h2>
+          <p class="section-description">Personnalisation complète de votre expérience et gestion de la sécurité du compte</p>
+        </div>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <h3 class="feature-title">Gestion du compte</h3>
+          <p class="feature-description">Modification des informations personnelles et de la langue préférée</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-lock"></i>
+          </div>
+          <h3 class="feature-title">Sécurité avancée</h3>
+          <p class="feature-description">Changement du mot de passe maître et configuration de l'auto-verrouillage</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-user-shield"></i>
+          </div>
+          <h3 class="feature-title">Authentification à deux facteurs</h3>
+          <p class="feature-description">Activation de la 2FA pour une sécurité renforcée</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-eye-slash"></i>
+          </div>
+          <h3 class="feature-title">Confidentialité</h3>
+          <p class="feature-description">Options d'autoremplissage, générateur de mots de passe et effacement automatique du presse-papiers</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-file-export"></i>
+          </div>
+          <h3 class="feature-title">Import/Export des données</h3>
+          <p class="feature-description">Sauvegarde et transfert de vos données en différents formats</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">
+            <i class="fas fa-palette"></i>
+          </div>
+          <h3 class="feature-title">Personnalisation</h3>
+          <p class="feature-description">Sélection du thème (sombre, clair, système) et autres préférences</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Timeline -->
+    <div class="timeline-container">
+      <h3 class="timeline-title">Évolution des Fonctionnalités</h3>
+      <div class="timeline">
+        <div class="timeline-item dashboard">
+          <div class="timeline-point">
+            <i class="fas fa-home"></i>
+          </div>
+          <div class="timeline-label">Dashboard</div>
+          <div class="timeline-description">Vue d'ensemble</div>
+        </div>
+        
+        <div class="timeline-item passwords">
+          <div class="timeline-point">
+            <i class="fas fa-key"></i>
+          </div>
+          <div class="timeline-label">Gestion des Mots de Passe</div>
+          <div class="timeline-description">Organisation et sécurité</div>
+        </div>
+        
+        <div class="timeline-item security">
+          <div class="timeline-point">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <div class="timeline-label">Rapport de Sécurité</div>
+          <div class="timeline-description">Analyse et recommandations</div>
+        </div>
+        
+        <div class="timeline-item settings">
+          <div class="timeline-point">
+            <i class="fas fa-cog"></i>
+          </div>
+          <div class="timeline-label">Paramètres</div>
+          <div class="timeline-description">Personnalisation</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="roadmap-footer">
+    <p>Vault Personal - Votre solution complète de gestion de mots de passe sécurisée</p>
+    <div class="footer-links">
+      <a href="#" class="footer-link">Documentation</a>
+      <a href="#" class="footer-link">Support</a>
+      <a href="#" class="footer-link">Télécharger l'application</a>
+    </div>
+    <p>&copy; 2025 Vault Personal. Tous droits réservés.</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Navigation between pages
+      const navButtons = document.querySelectorAll('.nav-btn');
+      const pageSections = document.querySelectorAll('.page-section');
+      
+      navButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const targetPage = this.getAttribute('data-page');
+          
+          // Update active button
+          navButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          
+          // Show target section
+          pageSections.forEach(section => {
+            section.classList.remove('active');
+            if (section.id === targetPage) {
+              section.classList.add('active');
+            }
+          });
+        });
+      });
+      
+      // Add subtle animations to feature cards
+      const featureCards = document.querySelectorAll('.feature-card');
+      featureCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-7px)';
+        });
+        
+        card.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
