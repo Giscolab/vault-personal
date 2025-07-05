@@ -1,0 +1,21 @@
+@layer theme.deathstar {
+  :root[data-theme="deathstar"] {
+    --color-bg: #0a0a0a;
+    --color-surface: #141414;
+    --color-surface-alt: #1c1c1c;
+    --color-surface-light: #262626;
+
+    --color-text: #f0f0f0;
+    --color-text-muted: #888;
+    --color-text-primary: #f0f0f0;
+
+    --color-accent: #ff4545;
+    --color-accent-alt: #ff7777;
+
+    --color-danger: #ff3333;
+    --color-success: #4caf50;
+    --color-warning: #ffa000;
+
+    --color-border: #2a2a2a;
+  }
+}

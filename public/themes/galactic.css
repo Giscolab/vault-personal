@@ -1,0 +1,12 @@
+@layer theme.galactic {
+  :root[data-theme="galactic"] {
+    --color-bg: #000014;
+    --color-surface: #0a0a2a;
+    --color-surface-alt: #12123a;
+    --color-surface-light: #1c1c4a;
+    --color-text: #d0d0ff;
+    --color-accent: #5a5aff;
+    --color-accent-alt: #7a7aff;
+    --color-border: #333366;
+  }
+}

@@ -1,0 +1,32 @@
+@layer theme.ubuntu {
+  :root[data-theme="ubuntu"] {
+    --color-bg: #2c001e;
+    --color-text: #ffffff;
+
+    --color-text-muted: #bbbbbb;
+    --color-text-primary: #ffffff;
+
+    --color-accent: #dd4814;
+    --color-accent-alt: #e95420;
+
+    --color-surface: #3c0c1e;
+    --color-surface-alt: #2a0018;
+    --color-surface-light: #4b1930;
+
+    --color-border: #5e2a40;
+
+    --font-sans: 'Ubuntu', system-ui, sans-serif;
+
+    --radius-sm: 6px;
+    --radius-md: 10px;
+
+    --transition: 0.3s ease;
+
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-md: 1.125rem;
+
+    --lh-tight: 1.2;
+    --spacing-sm: 0.5rem;
+  }
+}

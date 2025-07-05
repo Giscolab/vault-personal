@@ -27,15 +27,16 @@ export class VaultManager {
 
       await this.storage.saveVault([], newVault.meta);
     } else {
-      this.salt = this._base64ToArray(vaultRecord.meta.salt);
-      this.masterKey = await deriveMasterKey(password, this.salt);
+  this.salt = this._base64ToArray(vaultRecord.meta.salt);
+  this.masterKey = await deriveMasterKey(password, this.salt);
 
-      this.vault.clear();
-      for (const entry of vaultRecord.entries) {
-        const data = await decryptData(entry, this.masterKey);
-        this.vault.addEntry({ id: entry.id, ...data });
-      }
-    }
+  this.vault.clear();
+  for (const entry of vaultRecord.entries) {
+    const data = await decryptData(entry, this.masterKey);
+    this.vault.addEntry({ id: entry.id, ...data });
+  }
+  window.vault = this.vault; // ✅ ligne ajoutée proprement ici
+}
   }
 
   async addEntry(entryData) {
@@ -100,6 +101,37 @@ async getPasswordStats() {
   };
 }
 
+  async markEntryAccessed(entryId) {
+    const vault = await this._loadRawVault();
+    const now = Date.now();
+    
+    for (let encryptedEntry of vault.entries) {
+      if (encryptedEntry.id === entryId) {
+        // Déchiffrer l’entrée
+        const data = await decryptData(encryptedEntry, this.masterKey);
+        data.lastAccessed = now;
+        data.accessCount = (data.accessCount || 0) + 1;
+
+        // Réencrypter avec les nouveaux champs
+        const updatedEncrypted = await encryptData(data, this.masterKey);
+        Object.assign(encryptedEntry, updatedEncrypted);
+        break;
+      }
+    }
+
+    vault.meta.last_modified = new Date().toISOString();
+    await this.storage.saveVault(vault.entries, vault.meta);
+
+    // Met aussi à jour en mémoire
+    const localEntry = this.vault.getEntryById(entryId);
+    if (localEntry) {
+      localEntry.lastAccessed = now;
+      localEntry.accessCount = (localEntry.accessCount || 0) + 1;
+	  this.vault.updateEntry(localEntry);
+
+    }
+  }
+
 
   getEntries() {
     return this.vault.getAllEntries();
@@ -121,3 +153,6 @@ async getPasswordStats() {
     return Uint8Array.from(atob(str), c => c.charCodeAt(0));
   }
 }
+export const vaultManager = new VaultManager();
+
+

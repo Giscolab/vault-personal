@@ -1,5 +1,10 @@
 {
   "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "eslint": "^9.29.0",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-security": "^3.0.1",
+    "globals": "^16.2.0",
     "purgecss": "^7.0.2"
   }
 }

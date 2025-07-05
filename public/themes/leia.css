@@ -1,0 +1,12 @@
+@layer theme.leia {
+  :root[data-theme="leia"] {
+    --color-bg: #fff0f5;
+    --color-surface: #ffe4e1;
+    --color-surface-alt: #ffd1dc;
+    --color-surface-light: #ffc0cb;
+    --color-text: #4a4a4a;
+    --color-accent: #ff69b4;
+    --color-accent-alt: #ff85c1;
+    --color-border: #ffa6c9;
+  }
+}

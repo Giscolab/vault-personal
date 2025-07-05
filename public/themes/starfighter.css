@@ -1,0 +1,12 @@
+@layer theme.starfighter {
+  :root[data-theme="starfighter"] {
+    --color-bg: #0d0d2b;
+    --color-surface: #1a1a40;
+    --color-surface-alt: #333366;
+    --color-surface-light: #4d4d99;
+    --color-text: #ffffff;
+    --color-accent: #ffd700;
+    --color-accent-alt: #fff176;
+    --color-border: #444;
+  }
+}

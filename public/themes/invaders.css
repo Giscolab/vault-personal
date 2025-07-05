@@ -1,0 +1,12 @@
+@layer theme.invaders {
+  :root[data-theme="invaders"] {
+    --color-bg: #0b0c10;
+    --color-surface: #1f2833;
+    --color-surface-alt: #20232a;
+    --color-surface-light: #3a3f4b;
+    --color-text: #66fcf1;
+    --color-accent: #45a29e;
+    --color-accent-alt: #5fffd2;
+    --color-border: #3d3d3d;
+  }
+}

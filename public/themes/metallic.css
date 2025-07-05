@@ -1,0 +1,12 @@
+@layer theme.metallic {
+  :root[data-theme="metallic"] {
+    --color-bg: #1e1e1e;
+    --color-surface: #2b2b2b;
+    --color-surface-alt: #3a3a3a;
+    --color-surface-light: #4a4a4a;
+    --color-text: #c0c0c0;
+    --color-accent: #a9a9a9;
+    --color-accent-alt: #d3d3d3;
+    --color-border: #555;
+  }
+}

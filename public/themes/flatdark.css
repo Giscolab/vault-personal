@@ -1,0 +1,12 @@
+@layer theme.flatdark {
+  :root[data-theme="flatdark"] {
+    --color-bg: #1a1a1a;
+    --color-surface: #222;
+    --color-surface-alt: #2a2a2a;
+    --color-surface-light: #333;
+    --color-text: #ddd;
+    --color-accent: #3a9ff1;
+    --color-accent-alt: #62c4ff;
+    --color-border: #444;
+  }
+}

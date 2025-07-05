@@ -1,0 +1,12 @@
+@layer theme.sith {
+  :root[data-theme="sith"] {
+    --color-bg: #1b0000;
+    --color-surface: #2b0000;
+    --color-surface-alt: #3c0000;
+    --color-surface-light: #4d0000;
+    --color-text: #ffebee;
+    --color-accent: #ff1744;
+    --color-accent-alt: #ff4569;
+    --color-border: #660000;
+  }
+}

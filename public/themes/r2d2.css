@@ -1,0 +1,12 @@
+@layer theme.r2d2 {
+  :root[data-theme="r2d2"] {
+    --color-bg: #ffffff;
+    --color-surface: #f0f0f0;
+    --color-surface-alt: #e0e0e0;
+    --color-surface-light: #d0d0d0;
+    --color-text: #000000;
+    --color-accent: #1976d2;
+    --color-accent-alt: #42a5f5;
+    --color-border: #ccc;
+  }
+}

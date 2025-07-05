@@ -23,7 +23,7 @@ import { VaultManager } from './core/vault/manager.js';
 import { Vault } from './core/vault/vault.js';
 
 // === Sécurité
-import { AutoLock } from './security/autolock.js';
+import { AutoLock, getStoredDelay } from './security/autolock.js';
 import { zeroize } from './security/memory.js';
 import { enforceCSP } from './security/csp.js';
 import { auditVault } from './security/audit.js';
@@ -32,9 +32,11 @@ import { auditVault } from './security/audit.js';
 import { showAuthScreen, hideAuthScreen } from './ui/auth-screen/auth-screen.js';
 import { evaluatePasswordStrength, renderStrengthMeter } from './ui/password-meter/password-meter.js';
 import { renderVaultEntries } from './ui/vault-list/vault-list.js';
+import { renderRecentAccesses } from './ui/dashboard.js';
 import { renderSecurityReport } from './ui/security-report.js';
 import { renderSecurityChart } from './ui/security-chart.js';
-import './ui/sidebar.js';
+import { showView } from'./ui/sidebar.js';
+import { initThemeSelector } from './ui/theme-selector.js';
 
 // === Utilitaires
 import { PasswordGenerator } from './utils/password-generator.js';
@@ -56,12 +58,10 @@ const navPasswords = document.getElementById('nav-passwords');
 const navSecurity = document.getElementById('nav-security');
 const navSettings = document.getElementById('nav-settings');
 
-// Helper pour afficher une seule vue principale à la fois
-function showView(viewId) {
-  document.querySelectorAll('section.view').forEach(section => section.hidden = true);
-  const view = document.getElementById(viewId);
-  if (view) view.hidden = false;
-}
+// === Initialisation du thème utilisateur (après chargement DOM)
+document.addEventListener('DOMContentLoaded', () => {
+  initThemeSelector();
+});
 
 // Dashboard
 if (navDashboard) {
@@ -134,7 +134,8 @@ const locker = new AutoLock(() => {
   const pwInput = document.getElementById('master-password');
   if (pwInput) pwInput.value = '';
   showToast('Session verrouillée automatiquement.', 'error');
-}, 300000);
+}, getStoredDelay() * 1000);
+
 
 
 const generateBtn = document.getElementById('generate-password');
@@ -203,6 +204,7 @@ document.getElementById('auth-form').addEventListener('submit', async (e) => {
       if (!test || test.check !== 'ok') throw new Error('Validation échouée');
 
       await vaultManager.decryptAllEntries();
+renderRecentAccesses();
 
     } catch (err) {
       vaultManager.masterKey = null;

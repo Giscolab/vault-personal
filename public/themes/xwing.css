@@ -1,0 +1,12 @@
+@layer theme.xwing {
+  :root[data-theme="xwing"] {
+    --color-bg: #101010;
+    --color-surface: #1f1f1f;
+    --color-surface-alt: #2e2e2e;
+    --color-surface-light: #3d3d3d;
+    --color-text: #eeeeee;
+    --color-accent: #f44336;
+    --color-accent-alt: #e57373;
+    --color-border: #555;
+  }
+}

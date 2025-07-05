@@ -1,0 +1,12 @@
+@layer theme.lightsaber {
+  :root[data-theme="lightsaber"] {
+    --color-bg: #000;
+    --color-surface: #111;
+    --color-surface-alt: #222;
+    --color-surface-light: #333;
+    --color-text: #fff;
+    --color-accent: #00eaff;
+    --color-accent-alt: #66f0ff;
+    --color-border: #444;
+  }
+}
