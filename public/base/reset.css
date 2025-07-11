@@ -28,7 +28,6 @@
     background: none;
     border: none;
 
-    /* outline: none;  PAS besoin, focus visible reste géré ailleurs ! */
   }
 
   :where(ul, ol) {

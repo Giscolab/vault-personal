@@ -40,7 +40,7 @@
 
   .sidebar h1 {
     font-size: var(--fs-600);
-    color: white;
+    color: var(--color-text);
     font-weight: 600;
   }
 
@@ -71,7 +71,7 @@
   }
 
   .sidebar nav a.active {
-    background: linear-gradient(90deg, rgb(127 57 251 / 30%), transparent);
+    background: linear-gradient(90deg, rgb(0 0 0 / 5%), transparent);
     color: var(--color-accent);
     border-left: 3px solid var(--color-accent);
     font-weight: 500;

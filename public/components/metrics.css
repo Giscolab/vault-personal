@@ -74,7 +74,7 @@
 
   .metric-card h3 {
     font-size: 1.75rem;
-    color: white;
+    color: var(--color-text);
     margin-bottom: 0.25rem;
   }
 

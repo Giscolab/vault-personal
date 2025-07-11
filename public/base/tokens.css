@@ -1,10 +1,4 @@
 @layer base.tokens {
-  /*
-   * Ce fichier `tokens.css` contient les tokens **neutres et constants**
-   * qui ne dépendent **pas** du thème actif (pas de couleurs dynamiques ici).
-   * Toutes les variables thématiques sont désormais définies dans :
-   * `:root[data-theme="nom"]` dans les fichiers `/themes/*.css`
-   */
 
   /* Exemple — z-index système */
   :root {
@@ -24,6 +18,5 @@
     --breakpoint-lg: 1024px;
     --breakpoint-xl: 1280px;
 
-    /* Par défaut, pas de couleurs ici. Voir `themes/default.css`. */
   }
 }

@@ -1,6 +1,6 @@
 @layer components.score-box {
 		.score-box {
-			background: linear-gradient(135deg, #1a1a2e, #16213e);
+			background: linear-gradient(135deg, #ededed75, #f8f9fa);
 			padding: 2rem;
 			border-radius: var(--radius-md);
 			display: flex;

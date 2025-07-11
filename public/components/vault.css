@@ -230,7 +230,7 @@
 
   .vault-item .account-info strong {
     display: block;
-    color: white;
+    color: #5270fe;
     font-weight: 500;
     margin-bottom: 0.15rem;
   }
@@ -258,11 +258,11 @@
 
   /* Compteur dynamique enhanced */
   .count-badge {
-    background: var(--color-primary, #4f8cff);
+    background: var(--color-surface);
     color: #fff;
-    border-radius: 1em;
+    border-radius: 0.2em;
     padding: 0.15em 0.7em;
-    font-size: 0.95em;
+    font-size: 1.75em;
     margin-left: 0.5em;
     vertical-align: middle;
     font-weight: bold;

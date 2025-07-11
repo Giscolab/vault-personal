@@ -1,6 +1,30 @@
+const allowedThemes = [
+  "default",
+  "deathstar",
+  "flatdark",
+  "galactic",
+  "invaders",
+  "leia",
+  "lightsaber",
+  "metallic",
+  "millennium",
+  "padawan",
+  "r2d2",
+  "sith",
+  "starfighter",
+  "ubuntu",
+  "xwing"
+];
+
 const applyTheme = (theme) => {
   const linkId = "theme-css";
   let link = document.getElementById(linkId);
+
+  // Sécurisation : vérifie si le thème est autorisé
+  if (!allowedThemes.includes(theme)) {
+    console.warn(`Thème non autorisé : "${theme}"`);
+    theme = "default";
+  }
 
   // Met à jour l'attribut data-theme
   document.documentElement.setAttribute("data-theme", theme);

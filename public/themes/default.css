@@ -1,5 +1,5 @@
 @layer theme.default {
-  :root[data-theme="default"] {
+  :root {
     /* Z-index */
     --z-index-toast: 1000;
     --z-index-modal: 1100;
@@ -10,8 +10,7 @@
     --shadow-md: 0 8px 20px rgb(0 0 0 / 25%);
     --shadow-lg: 0 4px 12px rgb(0 0 0 / 30%);
 
-    /* Typographie */
-    --font-sans: 'Segoe UI', system-ui, -apple-system, roboto, sans-serif;
+    /* Typographie commune */
     --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', menlo, consolas, monospace;
     --fs-200: 0.75rem;
     --fs-300: 0.875rem;
@@ -40,7 +39,7 @@
     /* Rayons */
     --radius-xs: 2px;
     --radius-sm: 6px;
-    --radius-md: 12px;
+    --radius-md: 5px;
     --radius-lg: 8px;
     --radius-xl: 12px;
 
@@ -49,6 +48,11 @@
     --transition-fast: 0.1s ease-in-out;
     --transition-toast: 300ms cubic-bezier(0.21, 1.02, 0.73, 1);
     --transition: 0.2s ease-in-out;
+  }
+
+  :root[data-theme="default"] {
+    /* Typographie principale */
+    --font-sans: 'Segoe UI', system-ui, -apple-system, roboto, sans-serif;
 
     /* Couleurs de base */
     --color-black: #121212;
@@ -58,19 +62,19 @@
     /* Couleurs fonctionnelles */
     --color-primary: #6a1b9a;
     --color-primary-hover: #8e24aa;
-    --color-accent: #bb86fc;
-    --color-accent-alt: #7f39fb;
+    --color-accent: #4caf50;
+    --color-accent-alt: #4caf50;
     --color-danger: #d32f2f;
     --color-success: #4caf50;
     --color-warning: #ff9800;
 
-    /* Couleurs système (dark theme) */
-    --color-bg: #121212;
-    --color-surface: #1e1e1e;
-    --color-surface-alt: #242424;
+    /* Couleurs système */
+    --color-bg: #fff;
+    --color-surface: #f8f9fa;
+    --color-surface-alt: #ededed75;
     --color-surface-light: #2d2d2d;
     --color-overlay: rgb(0 0 0 / 60%);
-    --color-text: #e0e0e0;
+    --color-text: #6c7778;
     --color-text-muted: #999;
     --color-border: #333;
     --color-focus-ring: var(--color-accent);

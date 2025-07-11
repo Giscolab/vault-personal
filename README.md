@@ -207,7 +207,7 @@ gantt
 
 ## 🤝 Contribution & Support
 
-**Nous accueillons les contributions!**  
+**contributions appréciées !**  
 ```bash
 # Workflow recommandé :
 1. Fork du projet
@@ -217,8 +217,7 @@ gantt
 5. Ouverture d'une Pull Request
 ```
 
-**Support technique :**  
-📧 [support@vault-personal.fr](mailto:support@vault-personal.fr)  
+**Support technique :**    
 🐛 [Signaler un bug](https://github.com/Giscolab/vault-personal/issues)  
 💡 [Soumettre une idée](https://github.com/Giscolab/vault-personal/discussions)
 

@@ -80,6 +80,23 @@
   .setting-control {
     margin-left: 1rem;
   }
+  
+  .audit-settings-btn {
+  padding: 0.6rem 1.25rem;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, var(--color-accent-alt), var(--color-accent));
+  color: white;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.audit-settings-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
 
   /* ⬇️ Formulaire spécifique : nom, email, langue */
   .form-group {
@@ -129,7 +146,7 @@
 
   .settings-card .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(127, 57, 251, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
 
   /* ⬇️ Dropdown spécifique si utilisé ailleurs */

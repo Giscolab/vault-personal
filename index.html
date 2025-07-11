@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr" data-theme="default">
 
-
 <head>
 	<meta charset="UTF-8">
 	<title>Vault Personal</title>
@@ -18,20 +17,18 @@
   form-action 'self';
   object-src 'none';
 ">
-
-<!-- 🎨 Chargement initial du thème -->
-<script src="scripts/utils/theme-loader.js"></script>
-
+	<!-- 🎨 Chargement initial du thème -->
+	<script src="scripts/utils/theme-loader.js"></script>
 	<!-- 🎨 Styles -->
 	<link rel="stylesheet" href="public/main.css" crossorigin="anonymous" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	<link rel="stylesheet" href="public/components/audit-panel.css">
 	<!-- 🔖 Favicons -->
 	<link rel="icon" href="public/icons/favicon.ico" type="image/x-icon">
 	<link rel="icon" type="image/png" sizes="32x32" href="public/icons/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="public/icons/favicon-16x16.png">
 	<link rel="apple-touch-icon" href="public/icons/apple-touch-icon.png">
 	<link rel="manifest" href="public/icons/site.webmanifest">
-
 </head>
 
 <body>
@@ -39,20 +36,57 @@
 		<p>JavaScript requis pour utiliser l'application.</p>
 	</noscript>
 	<main id="app">
-		<!-- 🔐 Écran d’authentification -->
-		<section id="auth-screen">
-			<h1>Déverrouiller le coffre</h1>
-			<form id="auth-form" class="auth-form" autocomplete="off">
-				<input type="text" name="username" hidden autocomplete="username">
-				<label for="master-password" class="sr-only">Mot de passe maître</label>
-				<input type="password" id="master-password" class="auth-form__input" placeholder="Mot de passe maître" autocomplete="off" required>
-				<div class="password-toggle">
-					<input type="checkbox" id="toggle-password-visibility" class="password-toggle__input">
-					<label for="toggle-password-visibility" class="password-toggle__label">Afficher le mot de passe</label>
-				</div>
-				<button type="submit" id="unlock-vault" class="btn btn--primary">Déverrouiller</button>
-			</form>
-		</section>
+		<!-- 🔐 Écran d’authentification principal -->
+<section id="auth-screen" class="auth-modal">
+  <div class="auth-box">
+    <div class="auth-icon">
+<svg xmlns="http://www.w3.org/2000/svg"
+     class="icon-shield"
+     viewBox="0 0 24 24"
+     width="32"
+     height="32"
+     fill="none"
+     stroke="currentColor">
+  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+</svg>
+
+    </div>
+    <h1 class="auth-title">Vault Personal</h1>
+    <p class="auth-subtitle">Coffre-fort de mots de passe 100% local</p>
+
+    <div class="auth-section">
+      <h2 class="auth-section-title">🔓 Déverrouillage</h2>
+      <p class="auth-section-desc">Entrez votre mot de passe maître pour accéder à vos données chiffrées</p>
+
+      <form id="auth-form" class="auth-form" autocomplete="off">
+        <input type="text" name="username" hidden autocomplete="username">
+        <label for="master-password" class="sr-only">Mot de passe maître</label>
+        <div class="auth-input-wrapper">
+          <input
+            type="password"
+            id="master-password"
+            class="auth-form__input"
+            placeholder="Mot de passe maître"
+            autocomplete="off"
+            required
+          >
+          <input type="checkbox" id="toggle-password-visibility" class="password-toggle__input">
+          <label for="toggle-password-visibility" class="password-toggle__label">Afficher le mot de passe</label>
+        </div>
+        <button type="submit" id="unlock-vault" class="btn btn--primary">Déverrouiller le coffre</button>
+      </form>
+    </div>
+
+    <hr class="auth-separator">
+
+    <ul class="auth-info">
+      <li>🛡️ Chiffrement AES-256 local</li>
+      <li>📡 Aucune donnée n'est envoyée sur Internet</li>
+      <li>🔒 Stockage 100% local et sécurisé</li>
+    </ul>
+  </div>
+</section>
+
 		<!-- 🧩 Interface principale -->
 		<section id="vault-ui" hidden>
 			<div class="wrapper">
@@ -133,7 +167,8 @@
 							<div class="progress-ring">
 								<svg width="120" height="120" viewBox="0 0 120 120">
 									<circle class="progress-bg" cx="60" cy="60" r="50"></circle>
-									<circle class="progress-fill" cx="60" cy="60" r="50"></circle>
+									<circle class="progress-fill" cx="60" cy="60" r="50">
+									</circle>
 								</svg>
 								<div class="progress-text" id="stats-score-ring">73%</div>
 							</div>
@@ -189,20 +224,19 @@
 								</div>
 							</div>
 						</section>
-<!-- Accès récents -->
-<section class="vault-list-container">
-  <div class="vault-header">
-    <h3>Accès récents</h3>
-    <div class="vault-actions">
-      <button><i class="fas fa-sort"></i> Trier</button>
-      <button><i class="fas fa-filter"></i> Filtrer</button>
-    </div>
-  </div>
-  <section class="vault-list" id="recent-entries">
-    <!-- Éléments injectés dynamiquement -->
-  </section>
-</section>
-
+						<!-- Accès récents -->
+						<section class="vault-list-container">
+							<div class="vault-header">
+								<h3>Accès récents</h3>
+								<div class="vault-actions">
+									<button><i class="fas fa-sort"></i> Trier</button>
+									<button><i class="fas fa-filter"></i> Filtrer</button>
+								</div>
+							</div>
+							<section class="vault-list" id="recent-entries">
+								<!-- Éléments injectés dynamiquement -->
+							</section>
+						</section>
 					</section>
 					<section id="passwords-view" class="view" hidden>
 						<header class="header">
@@ -230,15 +264,14 @@
 							</div>
 						</div>
 						<!-- Conteneur principal des mots de passe -->
-<section id="vault-list" class="vault-list-container">
-	<div class="vault-header">
-		<h3> Tous les mots de passe <span id="vault-count" class="count-badge"></span></h3>
-		<div class="vault-actions">
-			<button><i class="fas fa-sync-alt"></i> Actualiser</button>
-		</div>
-	</div>
-</section>
-
+						<section id="vault-list" class="vault-list-container">
+							<div class="vault-header">
+								<h3> Tous les mots de passe <span id="vault-count" class="count-badge"></span></h3>
+								<div class="vault-actions">
+									<button><i class="fas fa-sync-alt"></i> Actualiser</button>
+								</div>
+							</div>
+						</section>
 						<section class="vault-list" id="entries"></section>
 					</section>
 					<!-- Rapport de sécurité -->
@@ -257,7 +290,7 @@
 							<div class="score-card score-weak">
 								<div class="score-value">16</div>
 								<div class="score-label">Mots de passe faibles</div>
-								<p class="score-description">Mots de passe faciles à deviner</p>
+								<p class="score-description">Mots de passe faciles à deviner </p>
 							</div>
 							<div class="score-card score-reused">
 								<div class="score-value">9</div>
@@ -460,10 +493,10 @@
 									</div>
 								</div>
 								<div class="settings-group">
-									<h4 class="settings-group-title">Verrouillage automatique</h4>
+									<h4 class="settings-group-title">Verrouillage automatique </h4>
 									<div class="setting-item">
 										<div class="setting-info">
-											<div class="setting-label">Activer le verrouillage auto.</div>
+											<div class="setting-label">Activer le verrouillage auto. </div>
 											<div class="setting-description">Verrouille automatiquement Vault après inactivité</div>
 										</div>
 										<div class="setting-control">
@@ -527,7 +560,7 @@
 								</div>
 								<div class="setting-item">
 									<div class="setting-info">
-										<div class="setting-label">Générateur de mots de passe</div>
+										<div class="setting-label">Générateur de mots de passe </div>
 										<div class="setting-description">Utiliser le générateur de mots de passe avancé</div>
 									</div>
 									<div class="setting-control">
@@ -547,6 +580,15 @@
 											<input type="checkbox" checked>
 											<span class="toggle-slider"></span>
 										</label>
+									</div>
+								</div>
+								<div class="setting-item">
+									<div class="setting-info">
+										<div class="setting-label">Audit de sécurité</div>
+										<div class="setting-description">Lancer une analyse cryptographique de votre coffre</div>
+									</div>
+									<div class="setting-control">
+										<button id="launch-audit-ui" class="audit-settings-btn">Lancer l’audit</button>
 									</div>
 								</div>
 								<div class="setting-item">
@@ -581,7 +623,7 @@
 								</div>
 								<div class="setting-item">
 									<div class="setting-info">
-										<div class="setting-label">Importer un coffre (.vault)</div>
+										<div class="setting-label">Importer un coffre (.vault) </div>
 										<div class="setting-description">Importer un coffre sauvegardé</div>
 									</div>
 									<div class="setting-control">
@@ -599,34 +641,32 @@
 										<input type="file" id="csv-import" accept=".csv" hidden>
 									</div>
 								</div>
-<div class="setting-item">
-  <div class="setting-info">
-    <div class="setting-label">Thème</div>
-    <div class="setting-description">Modifier l'apparence de Vault</div>
-  </div>
-  <div class="setting-control">
-
-    <!-- Liste déroulante visible -->
-    <select id="theme-select" class="dropdown-medium">
-      <option value="default" selected>Thème sombre (Default)</option>
-      <option value="ubuntu">Ubuntu</option>
-      <option value="lightsaber">Lightsaber</option>
-      <option value="r2d2">R2D2</option>
-      <option value="padawan">Padawan</option>
-      <option value="flatdark">FlatDark</option>
-      <option value="invaders">Invaders</option>
-      <option value="metallic">Metallic</option>
-      <option value="millennium">Millennium</option>
-      <option value="leia">Leia</option>
-      <option value="deathstar">DeathStar</option>
-      <option value="starfighter">Starfighter</option>
-      <option value="xwing">X-Wing</option>
-      <option value="sith">Sith Order</option>
-      <option value="galactic">Galactic</option>
-    </select>
-  </div>
-</div>
-
+								<div class="setting-item">
+									<div class="setting-info">
+										<div class="setting-label">Thème</div>
+										<div class="setting-description">Modifier l'apparence de Vault</div>
+									</div>
+									<div class="setting-control">
+										<!-- Liste déroulante visible -->
+										<select id="theme-select" class="dropdown-medium">
+											<option value="default" selected>Thème par défaut </option>
+											<option value="ubuntu">Ubuntu</option>
+											<option value="lightsaber">Lightsaber</option>
+											<option value="r2d2">R2D2</option>
+											<option value="padawan">Padawan</option>
+											<option value="flatdark">FlatDark</option>
+											<option value="invaders">Invaders</option>
+											<option value="metallic">Metallic</option>
+											<option value="millennium">Millennium</option>
+											<option value="leia">Leia</option>
+											<option value="deathstar">DeathStar</option>
+											<option value="starfighter">Starfighter</option>
+											<option value="xwing">X-Wing</option>
+											<option value="sith">Sith Order</option>
+											<option value="galactic">Galactic</option>
+										</select>
+									</div>
+								</div>
 							</div>
 							<!-- Zone dangereuse -->
 							<div class="settings-card settings-card--danger">
@@ -766,8 +806,11 @@
 		</div>
 		<!-- ⚙️ Scripts -->
 		<script src="scripts/vendor/chart.min.js"></script>
-		<script type="module" src="scripts/app.js" crossorigin="anonymous"></script>
+		<script type="module" src="scripts/app.js" crossorigin="anonymous">
+		</script>
 		<script type="module" src="scripts/ui/security-report-init.js"></script>
+		<script src="scripts/tools/audit-crypto.js"></script>
+		<script src="scripts/ui/audit-panel.js" defer></script>
 		<!-- 📺 UI auxiliaire -->
 		<div id="log-console"></div>
 	</main>
