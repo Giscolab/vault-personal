@@ -125,6 +125,56 @@
 
 ---
 
+﻿## 🎨 [7c2115e] Mise à jour thémes & composants UI – *11 juillet 2025*
+
+**Auteur :** Franck  
+**Résumé :** Finalisation de la thématisation complète et ajout de nouveaux composants pour l’audit et les réglages
+
+### ✨ Nouveaux fichiers
+
+- **Composants UI & audit :**
+  - `scripts/ui/settings.js` – Panneau de préférences utilisateur
+  - `scripts/ui/audit-panel.js` – Interface d’analyse de sécurité
+  - `scripts/ui/sidebar-profile.js` – Chargement dynamique du profil utilisateur
+  - `public/components/audit-panel.css` – Style visuel pour le panneau d’audit
+
+- **Scripts d’outils :**
+  - `scripts/tools/audit-crypto.js` – Analyse cryptographique (préparation)
+
+- **Utilitaires export/log :**
+  - `export-log.html`, `export_log.py` – Gabarit pour l’export sécurisé
+  - `Page`, `Port` – (fichiers temporaires, à trier/documenter)
+
+- **Journalisation locale :**
+  - `vault_local.log` – Fichier de trace (à exclure dans Git si non pertinent)
+
+### 🎨 Thèmes personnalisés finalisés
+
+Ajout ou mise à jour des thèmes suivants dans `public/themes/` :
+`ubuntu.css`, `lightsaber.css`, `r2d2.css`, `padawan.css`, `flatdark.css`, `invaders.css`,  
+`metallic.css`, `millennium.css`, `leia.css`, `deathstar.css`, `starfighter.css`, `xwing.css`, `sith.css`, `galactic.css`
+
+> Tous héritent proprement de `default.css` via `@layer theme.nom`
+
+### 📝 Fichiers modifiés
+
+- `README.md`, `index.html` – Mise à jour de la présentation et du support thématique
+- `public/base/reset.css`, `tokens.css` – Harmonisation des variables de base
+- `public/components/*.css` – Ajustements visuels (`header`, `metrics`, `password-tools`, `score-box`, `sidebar`, `vault`)
+- `public/layout/auth.css`, `settings.css` – Améliorations UI
+- `scripts/app.js`, `scripts/ui/theme-selector.js`, `scripts/utils/theme-loader.js`, `idb-helper.js` – Support JS pour les nouveaux composants
+
+### 🧹 Nettoyage
+
+- Suppression de `purge-analysis.log` (log CSS obsolète)
+- Refactoring du `start_vault_local.bat`
+
+### 🛠️ Divers
+
+- Fin de conversion CRLF sur les fichiers de thème (`.gitattributes` recommandé)
+- Ajout d’éléments de debug temporaire (`Page`, `Port`, `vault_local.log`) – à exclure via `.gitignore`
+
+
 ## 🚀 [1.0.0] Première version stable – *18 mai 2025*
 
 **Auteur :** Franck  
