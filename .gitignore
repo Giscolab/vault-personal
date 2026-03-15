@@ -1,5 +1,7 @@
 ﻿vault_*.vault
-no\ push/
+logs/
+vault_*.log
+
 
 # Dépendances (CRITIQUE - ne jamais commiter)
 node_modules/
