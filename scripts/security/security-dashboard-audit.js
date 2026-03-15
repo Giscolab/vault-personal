@@ -6,6 +6,7 @@ import { isPasswordPwned } from './hibp-service.js';
 import { classifyFinding, getEntrySeverity, sortBySeverity, SEVERITY } from './severity.js';
 import { categorizePasswordAge } from '../utils/password-age.js';
 import { getPasswordEntropy } from './audit.js';
+import { groupPasswordReuse } from './password-reuse-groups.js';
 
 function analyzeLocal(entries = []) {
   const counts = new Map();
@@ -42,7 +43,7 @@ async function analyzeHibpBatched(analysis, concurrency = 5) {
 }
 
 export async function auditSecurityDashboard(entries = [], options = {}) {
-  const { checkHibp = true, hibpConcurrency = 5 } = options;
+  const { checkHibp = false, hibpConcurrency = 5 } = options;
 
   const report = {
     summary: {
@@ -58,6 +59,7 @@ export async function auditSecurityDashboard(entries = [], options = {}) {
     },
     vulnerabilities: [],
     weakPasswords: [],
+    reuseGroups: [],
     recommendations: [],
     raw: []
   };
@@ -65,6 +67,9 @@ export async function auditSecurityDashboard(entries = [], options = {}) {
   if (!entries.length) return report;
 
   const analysis = analyzeLocal(entries);
+  report.reuseGroups = groupPasswordReuse(entries);
+  report.summary.reused = report.reuseGroups.reduce((total, group) => total + group.entries.length, 0);
+
   if (checkHibp) {
     await analyzeHibpBatched(analysis, hibpConcurrency);
   }
@@ -97,7 +102,6 @@ export async function auditSecurityDashboard(entries = [], options = {}) {
 
     if (item.reuseCount > 1) {
       findings.push(classifyFinding('reused', { count: item.reuseCount }));
-      report.summary.reused++;
     }
 
     const severity = getEntrySeverity(findings);

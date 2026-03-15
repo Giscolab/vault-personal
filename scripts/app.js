@@ -58,6 +58,9 @@ import {
 import {
 	auditSecurityDashboard
 } from './security/security-dashboard-audit.js';
+import {
+	getReuseGroupEntries
+} from './security/password-reuse-groups.js';
 // === UI
 import {
 	showAuthScreen,
@@ -79,6 +82,9 @@ import {
 import {
 	renderSecurityDashboardSections
 } from './ui/security-dashboard.js';
+import {
+	openReuseResolver
+} from './ui/reuse-resolver-modal.js';
 import {
 	renderSecurityChart
 } from './ui/security-chart.js';
@@ -111,6 +117,37 @@ const vaultManager = new VaultManager();
 vaultManager.storage = new StorageManager();
 vaultManager.isFirstTime = false;
 window.vaultManager = vaultManager;
+window.__VAULT_HIBP_ENABLED__ = false;
+
+document.addEventListener('vault:open-reuse-resolver', async (event) => {
+	const { groupId, groupData } = event.detail || {};
+	if (!groupId || !groupData) return;
+
+	const allEntries = vaultManager.getEntries();
+	const groupedEntries = getReuseGroupEntries(groupId, allEntries);
+	if (!groupedEntries.length) {
+		showToast('Impossible de retrouver les entrées de ce groupe.', 'warning');
+		return;
+	}
+
+	const saveEntry = async (updatedEntry) => {
+		await vaultManager.updateEntry(updatedEntry.id, updatedEntry);
+		return true;
+	};
+
+	openReuseResolver(groupData, allEntries, saveEntry);
+});
+
+document.addEventListener('vault:security-updated', () => {
+	const entries = vaultManager.getEntries();
+	auditSecurityDashboard(entries).then((report) => {
+		renderSecurityDashboardSections(report);
+		renderSecurityReport();
+	}).catch((err) => {
+		console.warn('[Security Dashboard] Rafraîchissement indisponible :', err?.message || err);
+	});
+});
+
 // === NAVIGATION PRINCIPALE (template tabs/views) ===
 const navDashboard = document.getElementById('nav-dashboard');
 const navPasswords = document.getElementById('nav-passwords');

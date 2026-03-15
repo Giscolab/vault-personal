@@ -66,6 +66,62 @@ function renderWeakPasswords(container, items = []) {
   `).join('');
 }
 
+function renderReuseGroups(groups = []) {
+  const existing = document.getElementById('reuse-groups-section');
+  if (existing) existing.remove();
+
+  const reportRoot = document.getElementById('security-report-view');
+  const recommendations = reportRoot?.querySelector('.recommendations');
+  if (!reportRoot || !recommendations) return;
+
+  if (!groups.length) return;
+
+  const section = document.createElement('section');
+  section.className = 'vulnerability-section';
+  section.id = 'reuse-groups-section';
+
+  const list = groups.map((group) => `
+    <div class="vulnerability-item vuln-${group.severity === 'critical' ? 'critical' : 'high'}">
+      <div class="vuln-info">
+        <div class="vuln-icon"><i class="fas fa-redo"></i></div>
+        <div class="vuln-details">
+          <strong>${group.entries.length} comptes identiques</strong>
+          <span>${escapeHtml(group.description)}</span>
+          <ul class="reuse-preview">
+            ${group.entries.slice(0, 3).map((entry) => `<li>${escapeHtml(entry.title || 'Sans titre')}</li>`).join('')}
+            ${group.entries.length > 3 ? `<li>...et ${group.entries.length - 3} autres</li>` : ''}
+          </ul>
+        </div>
+      </div>
+      <div class="vuln-severity severity-${group.severity}">${group.severity === 'critical' ? 'Critique' : 'Élevée'}</div>
+      <div class="vuln-actions">
+        <button class="vuln-action-btn resolve-reuse-btn" data-group-id="${group.hashId}">Corriger</button>
+      </div>
+    </div>
+  `).join('');
+
+  section.innerHTML = `
+    <div class="section-header">
+      <h3>Mots de passe réutilisés (${groups.length} groupes)</h3>
+    </div>
+    <div class="vulnerability-list">${list}</div>
+  `;
+
+  section.querySelectorAll('.resolve-reuse-btn').forEach((button) => {
+    button.addEventListener('click', () => {
+      const groupId = button.dataset.groupId;
+      const groupData = groups.find((group) => group.hashId === groupId);
+      if (!groupData) return;
+
+      document.dispatchEvent(new CustomEvent('vault:open-reuse-resolver', {
+        detail: { groupId, groupData }
+      }));
+    });
+  });
+
+  recommendations.insertAdjacentElement('beforebegin', section);
+}
+
 function renderRecommendations(container, items = []) {
   if (!container) return;
 
@@ -100,6 +156,7 @@ export function renderSecurityDashboardSections(report, root = document) {
 
   renderVulnerabilities(vulnerabilities, report.vulnerabilities);
   renderWeakPasswords(weakPasswords, report.weakPasswords);
+  renderReuseGroups(report.reuseGroups || []);
   renderRecommendations(recommendations, report.recommendations);
   updateHeaderCounters(root, report.summary);
 }

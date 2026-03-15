@@ -6,6 +6,25 @@ const HIBP_API = 'https://api.pwnedpasswords.com/range/';
 const CACHE_DURATION_MS = 24 * 60 * 60 * 1000;
 
 const pwnedCache = new Map();
+let offlineNoticeShown = false;
+
+function isHibpEnabled() {
+  if (typeof window !== 'undefined' && window.__VAULT_HIBP_ENABLED__ === false) {
+    return false;
+  }
+
+  if (typeof localStorage !== 'undefined') {
+    try {
+      if (localStorage.getItem('vault.security.hibp.enabled') === 'false') {
+        return false;
+      }
+    } catch {
+      // no-op
+    }
+  }
+
+  return true;
+}
 
 async function sha1(text) {
   const encoder = new TextEncoder();
@@ -17,13 +36,21 @@ async function sha1(text) {
 
 export async function isPasswordPwned(password) {
   if (!password || typeof password !== 'string') {
-    return { pwned: false, count: 0 };
+    return { pwned: false, count: 0, source: 'skipped' };
+  }
+
+  if (!isHibpEnabled()) {
+    if (!offlineNoticeShown) {
+      console.info('[HIBP] Vérification désactivée (mode offline).');
+      offlineNoticeShown = true;
+    }
+    return { pwned: false, count: 0, source: 'offline' };
   }
 
   const cacheKey = await sha1(password);
   const cached = pwnedCache.get(cacheKey);
   if (cached && (Date.now() - cached.timestamp < CACHE_DURATION_MS)) {
-    return { pwned: cached.pwned, count: cached.count };
+    return { pwned: cached.pwned, count: cached.count, source: 'cache' };
   }
 
   try {
@@ -54,10 +81,10 @@ export async function isPasswordPwned(password) {
 
     const result = { pwned: count > 0, count };
     pwnedCache.set(cacheKey, { ...result, timestamp: Date.now() });
-    return result;
+    return { ...result, source: 'hibp' };
   } catch (error) {
     console.warn('[HIBP] Vérification indisponible:', error.message);
-    return { pwned: false, count: 0, error: error.message };
+    return { pwned: false, count: 0, error: error.message, source: 'error' };
   }
 }
 
