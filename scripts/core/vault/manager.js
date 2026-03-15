@@ -3,6 +3,8 @@ import { StorageManager } from '../../core/storage/manager.js';
 import { Vault } from './vault.js';
 import { encryptData, decryptData } from '../../core/crypto/aes-gcm.js';
 import { deriveMasterKey } from '../../core/crypto/pbkdf2.js';
+import { migrateEntryTimestamps, touchEntryModified } from '../storage/migrations/entry-timestamps.js';
+import { isPasswordOld } from '../../utils/password-age.js';
 
 export class VaultManager {
   constructor() {
@@ -27,16 +29,34 @@ export class VaultManager {
 
       await this.storage.saveVault([], newVault.meta);
     } else {
-  this.salt = this._base64ToArray(vaultRecord.meta.salt);
-  this.masterKey = await deriveMasterKey(password, this.salt);
+      this.salt = this._base64ToArray(vaultRecord.meta.salt);
+      this.masterKey = await deriveMasterKey(password, this.salt);
 
-  this.vault.clear();
-  for (const entry of vaultRecord.entries) {
-    const data = await decryptData(entry, this.masterKey);
-    this.vault.addEntry({ id: entry.id, ...data });
-  }
-  window.vault = this.vault; // ✅ ligne ajoutée proprement ici
-}
+      this.vault.clear();
+      const decryptedEntries = [];
+      for (const entry of vaultRecord.entries) {
+        const data = await decryptData(entry, this.masterKey);
+        decryptedEntries.push({ id: entry.id, ...data });
+      }
+
+      const didMigrate = migrateEntryTimestamps(decryptedEntries, vaultRecord.meta);
+      for (const entry of decryptedEntries) {
+        this.vault.addEntry(entry);
+      }
+
+      if (didMigrate) {
+        const reencryptedEntries = [];
+        for (const entry of decryptedEntries) {
+          const { id, ...payload } = entry;
+          const encrypted = await encryptData(payload, this.masterKey);
+          reencryptedEntries.push({ id, ...encrypted });
+        }
+        vaultRecord.meta.last_modified = new Date().toISOString();
+        await this.storage.saveVault(reencryptedEntries, vaultRecord.meta);
+      }
+
+      window.vault = this.vault;
+    }
   }
 
   async addEntry(entryData) {
@@ -74,6 +94,7 @@ export class VaultManager {
       ...partialData,
       last_modified: new Date().toISOString()
     };
+    touchEntryModified(updatedEntry);
     const encrypted = await encryptData(updatedEntry, this.masterKey);
 
     vault.entries[entryIndex] = {
@@ -106,7 +127,7 @@ export class VaultManager {
 
 async getPasswordStats() {
   const entries = this.vault.getAllEntries();
-  const stats = { total: entries.length, reused: 0, weak: 0 };
+  const stats = { total: entries.length, reused: 0, weak: 0, old: 0 };
 
   const seen = new Set();
 
@@ -117,6 +138,10 @@ async getPasswordStats() {
     if (e.password.length < 10 || !/[A-Z]/.test(e.password) || !/[0-9]/.test(e.password)) {
       stats.weak++;
     }
+
+    if (isPasswordOld(e, 365)) {
+      stats.old++;
+    }
   }
 
   // === AJOUT CALCUL SCORE ===
@@ -126,13 +151,9 @@ async getPasswordStats() {
     if (score < 0) score = 0;
   }
 
-  // Tu peux aussi ajouter old si tu veux
-  // let old = ... (par exemple, à calculer selon la date de modif ou autre)
-
   return {
     ...stats,
-    score,        // <--- AJOUT OBLIGATOIRE !
-    old: 0        // <--- Si tu n’as pas encore old, mets 0 temporairement
+    score
   };
 }
 
@@ -189,4 +210,3 @@ async getPasswordStats() {
   }
 }
 export const vaultManager = new VaultManager();
-
