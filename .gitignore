@@ -24,3 +24,7 @@ export-log.html
 export-log*.html
 .DS_Store
 Thumbs.db
+
+# Fichiers locaux générés
+/Port
+/Page
