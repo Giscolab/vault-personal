@@ -55,6 +55,9 @@ import {
 import {
 	auditVault
 } from './security/audit.js';
+import {
+	auditSecurityDashboard
+} from './security/security-dashboard-audit.js';
 // === UI
 import {
 	showAuthScreen,
@@ -73,6 +76,9 @@ import {
 import {
 	renderSecurityReport
 } from './ui/security-report.js';
+import {
+	renderSecurityDashboardSections
+} from './ui/security-dashboard.js';
 import {
 	renderSecurityChart
 } from './ui/security-chart.js';
@@ -133,6 +139,12 @@ if (navSecurity) {
 	navSecurity.addEventListener('click', () => {
 		showView('security-report-view');
 		renderSecurityReport(); // met à jour dynamiquement à chaque affichage
+		const entries = vaultManager.getEntries();
+		auditSecurityDashboard(entries).then((report) => {
+			renderSecurityDashboardSections(report);
+		}).catch((err) => {
+			console.warn('[Security Dashboard] Audit indisponible :', err?.message || err);
+		});
 	});
 }
 // Paramètres
