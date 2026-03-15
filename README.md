@@ -207,6 +207,8 @@ gantt
 
 ## 🤝 Contribution & Support
 
+> ℹ️ **Artefacts locaux non versionnés** : les exports HTML de logs (ex. `export-log.html`) sont générés localement et ne doivent pas être commités. Le script `export_log.py` est conservé pour produire ces exports à la demande.
+
 **contributions appréciées !**  
 ```bash
 # Workflow recommandé :
