@@ -41,7 +41,13 @@ export class VaultManager {
 
   async addEntry(entryData) {
     const id = crypto.randomUUID();
-    const encrypted = await encryptData(entryData, this.masterKey);
+    const nowIso = new Date().toISOString();
+    const entryWithMeta = {
+      ...entryData,
+      created_at: entryData.created_at || nowIso,
+      last_modified: nowIso
+    };
+    const encrypted = await encryptData(entryWithMeta, this.masterKey);
     const vault = await this._loadRawVault();
 
     vault.entries.push({
@@ -52,7 +58,36 @@ export class VaultManager {
     vault.meta.last_modified = new Date().toISOString();
     await this.storage.saveVault(vault.entries, vault.meta);
 
-    this.vault.addEntry({ id, ...entryData }); // pour l'affichage direct
+    this.vault.addEntry({ id, ...entryWithMeta }); // pour l'affichage direct
+  }
+
+  async updateEntry(entryId, partialData) {
+    const vault = await this._loadRawVault();
+    const entryIndex = vault.entries.findIndex((entry) => entry.id === entryId);
+    if (entryIndex === -1) {
+      throw new Error('Entrée introuvable.');
+    }
+
+    const decrypted = await decryptData(vault.entries[entryIndex], this.masterKey);
+    const updatedEntry = {
+      ...decrypted,
+      ...partialData,
+      last_modified: new Date().toISOString()
+    };
+    const encrypted = await encryptData(updatedEntry, this.masterKey);
+
+    vault.entries[entryIndex] = {
+      id: entryId,
+      ...encrypted
+    };
+    vault.meta.last_modified = new Date().toISOString();
+    await this.storage.saveVault(vault.entries, vault.meta);
+
+    this.vault.updateEntry(entryId, {
+      ...this.vault.getEntryById(entryId),
+      ...updatedEntry,
+      id: entryId
+    });
   }
 
   async decryptAllEntries() {
@@ -127,7 +162,7 @@ async getPasswordStats() {
     if (localEntry) {
       localEntry.lastAccessed = now;
       localEntry.accessCount = (localEntry.accessCount || 0) + 1;
-	  this.vault.updateEntry(localEntry);
+	  this.vault.updateEntry(entryId, localEntry);
 
     }
   }
@@ -154,5 +189,4 @@ async getPasswordStats() {
   }
 }
 export const vaultManager = new VaultManager();
-
 

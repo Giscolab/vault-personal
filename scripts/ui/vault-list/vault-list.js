@@ -136,32 +136,29 @@ function renderVaultEntries(entries) {
 			btn.innerHTML = '<i class="fas fa-save"></i>';
 			btn.title = "Enregistrer";
 			btn.classList.add('editing');
-			function saveEdit() {
+			async function saveEdit() {
 				input.setAttribute('readonly', true);
 				input.type = 'password';
+				urlInput?.setAttribute('readonly', true);
 				btn.innerHTML = '<i class="fas fa-edit"></i>';
 				btn.title = "Modifier";
 				btn.classList.remove('editing');
-				(async () => {
-					const id = item.dataset.id;
-					try {
-						const vault = await window.vaultManager.storage.loadVault();
-						const updated = vault.entries.map(e => e.id === id ? {
-							...e,
-							password: input.value,
-							url: urlInput?.value || ''
-						} : e);
-						await window.vaultManager.storage.saveVault(updated, vault.meta);
-						await window.vaultManager.markEntryAccessed(id);
-						const decrypted = await window.vaultManager.decryptAllEntries();
-						renderVaultEntries(decrypted);
-						renderRecentAccesses(); // ✅
-						showToast('Mot de passe mis à jour.', 'success');
-					} catch (err) {
-						console.error(err);
-						showToast('Erreur lors de la mise à jour.', 'error');
-					}
-				})();
+
+				const id = item.dataset.id;
+				try {
+					await window.vaultManager.updateEntry(id, {
+						password: input.value,
+						url: urlInput?.value || ''
+					});
+					await window.vaultManager.markEntryAccessed(id);
+					const decrypted = await window.vaultManager.decryptAllEntries();
+					renderVaultEntries(decrypted);
+					renderRecentAccesses(); // ✅
+					showToast('Mot de passe mis à jour.', 'success');
+				} catch (err) {
+					console.error(err);
+					showToast('Erreur lors de la mise à jour.', 'error');
+				}
 				input.removeEventListener('blur', saveEdit);
 				btn.removeEventListener('click', saveEdit);
 			}
